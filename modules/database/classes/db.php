@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Daatabase related functions. Creates connections,
+ * Database related functions. Creates connections,
  * executes queries and returns results. It is also the
- * generic connectionc class used by drivers.
+ * generic connection class used by drivers.
  */
 abstract class DB {
 
@@ -47,8 +47,9 @@ abstract class DB {
     /**
      * Executes a named query where parameters are passed as an associative array
 	 * Example:
-	 * Query: SELECT * FROM fairies where name = :name
-	 * Params: array('name'=>'Tinkerbell');
+	 * <code>
+	 * $result=$db->namedQuery("SELECT * FROM fairies where name = :name",array('name'=>'Tinkerbell'));
+	 * </code>
      * 
      * @param string $query  A named query
      * @param array   $params Associative array of parameters

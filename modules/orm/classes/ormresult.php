@@ -2,7 +2,7 @@
 
 /**
  * Allows iterating over ORM objects inside loops lie 'foreach',
- * while preserving performanceby working with only a single row
+ * while preserving performance by working with only a single row
  * at a time. It wraps conveniently wraps around Database_Result class
  * returning ORM object instead of just data object.
  *
@@ -94,11 +94,11 @@ class ORMResult implements Iterator {
 
     /**
      * Returns an array of all rows as ORM objects if $rows is False,
-	 * or just an array of result rows with each row being a standart object,
+	 * or just an array of result rows with each row being a standard object,
 	 * this can be useful for functions like json_encode.
      * 
      * @param boolean $rows Whether to return just rows and not ORM objects
-     * @return array   Array of ORM objects or standart objects representing rows
+     * @return array   Array of ORM objects or standard objects representing rows
      * @access public  
      */
 	public function as_array($rows = false) {

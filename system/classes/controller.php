@@ -1,8 +1,8 @@
 <?php	
 
 /**
- * Base Controller class. Controlers contain the  logic of your website,
- * each action representing a reply to a prticular request, e.g. a single page.
+ * Base Controller class. Controllers contain the  logic of your website,
+ * each action representing a reply to a particular request, e.g. a single page.
  */
 class Controller {
 
@@ -60,7 +60,7 @@ class Controller {
 
     /**
      * Runs the appropriate action.
-	 * It will axecute the before() method before the action
+	 * It will execute the before() method before the action
 	 * and after() method after the action finishes.
      * 
      * @param string    $action Name of the action to execute.

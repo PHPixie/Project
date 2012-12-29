@@ -27,7 +27,7 @@ class ORM {
 
     /**
      * Specifies which connection the model will use, can be overridden
-	 * but a model can have relatioships only with models utilizing the same connection
+	 * but a model can have relationships only with models utilizing the same connection
      * @var string 
      * @access public 
      */
@@ -111,7 +111,7 @@ class ORM {
 	 * </code>
      * By default it will assume that the name of your table
 	 * is the plural form of the models' name, the PRIMARY KEY is id,
-	 * and will use the 'default' connection. This behaiour is easy to be
+	 * and will use the 'default' connection. This behaviour is easy to be
 	 * changed by overriding $table, $id and $db properties.
 	 *
      * @return void   
@@ -158,7 +158,7 @@ class ORM {
      * 
      * @param string $method      Method to call
      * @param array $arguments Arguments passed to the method
-     * @return mixed  Returns self if parameters were passed. If no parameters weere passed returns
+     * @return mixed  Returns self if parameters were passed. If no parameters where passed returns
 	 *                current value for the associated parameter
 	 * @throws Exception If method doesn't exist
      * @access public  
@@ -229,7 +229,7 @@ class ORM {
 
     /**
      * Returns a clone of  query builder that is being used to set conditions.
-	 * It is useful for example if you let ORM manage bulding a complex query using it's relationship
+	 * It is useful for example if you let ORM manage building a complex query using it's relationship
 	 * system, then you get the clone of that query and alter it to your liking,
 	 * so there is no need to writing relationship joins yourself.
      * 
@@ -256,10 +256,10 @@ class ORM {
     /**
      * Magic method that allows accessing row columns as properties and also facilitates
 	 * access to relationships and custom properties defined in get() method.
-     * If a relatioship is being accessed, it will return an ORM model of the related table
+     * If a relationship is being accessed, it will return an ORM model of the related table
 	 * and automatically alter its query so that all your previously set conditions will remain
 	 
-     * @param string   $column Name of the column, propert or relationship to get
+     * @param string   $column Name of the column, property or relationship to get
      * @return mixed   
      * @access public    
      * @throws Exception If neither property nor a relationship with such name is found
@@ -346,7 +346,7 @@ class ORM {
      * @param ORM    $model    ORM item to create a relationship with
      * @return void      
      * @access public    
-     * @throws Exception Exception If realtionship is not defined
+     * @throws Exception Exception If relationship is not defined
      * @throws Exception Exception If current item is not in the database yet (isn't considered loaded())
      * @throws Exception Exception If passed item is not in the database yet (isn't considered loaded())
      */

@@ -124,7 +124,7 @@ abstract class Query_Database {
 	protected $methods = array('table' => 'string','data' => 'array','limit' => 'integer','offset' => 'integer','groupby' => 'string','type' => 'string');
 
     /**
-     * Generates a query in format tht can be executed on current database implementation
+     * Generates a query in format that can be executed on current database implementation
      * 
      * @access public 
      */
@@ -225,7 +225,7 @@ abstract class Query_Database {
 	}
 	
     /**
-     * Sets conditions for aggregator functions, same behavior as with where() method
+     * Sets conditions for aggregate functions, same behavior as with where() method
      * 
      * @return Query_Database Returns self
      * @access public 
@@ -357,8 +357,8 @@ abstract class Query_Database {
 	}
 
     /**
-     * Generates new alias. Useful for programmatically adding aliases to joins.
-	 * Alias is just a letter 'a' with an incremeted number.
+     * Generates new alias. Useful for dynamically adding aliases to joins.
+	 * Alias is just a letter 'a' with an incremented number.
      * 
      * @return string New alias
      * @access public  

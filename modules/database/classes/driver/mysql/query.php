@@ -7,7 +7,7 @@ class Query_Mysql_Driver extends Query_Database{
 	
     /**
      * If a string is passed escapes a field by enclosing it in `` quotes.
-	 * If you pass an Expression_Database object the value will be inserted into the query uneascaped
+	 * If you pass an Expression_Database object the value will be inserted into the query unescaped
      * 
      * @param mixed $field     Field to be escaped or an Expression_Database object
 	 *                         if the field must not be escaped
@@ -29,7 +29,7 @@ class Query_Mysql_Driver extends Query_Database{
 	
     /**
      * Replaces the value with ? and appends it to the parameters array
-	 * If you pass an Expression_Database object the value will be inserted into the query uneascaped
+	 * If you pass an Expression_Database object the value will be inserted into the query unescaped
      * @param mixed $val     Value to be escaped or an Expression_Database object
 	 *                       if the value must not be escaped
      * @param array  &$params Reference to parameters array
@@ -156,7 +156,7 @@ class Query_Mysql_Driver extends Query_Database{
     /**
      * Recursively parses conditions array into a query string
      * 
-     * @param array     $p                   Element of the array of conditions
+     * @param array     $p                   Element of the cobditions array
      * @param array   &$params             Reference to parameters array
      * @param boolean   $skip_first_operator Flag to skip the first logical operator in a query
 	 *                                       to prevent AND or OR to be at the beginning of the query

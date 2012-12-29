@@ -57,8 +57,8 @@ class Debug {
      * 
      * @param string        $errno   Error number
      * @param string        $errstr  Error message
-     * @param string        $errfile File in which the error occured
-     * @param string        $errline Line at which the error occured
+     * @param string        $errfile File in which the error occurred
+     * @param string        $errline Line at which the error occurred
      * @return void           
      * @access public         
      * @throws ErrorException Throws converted exception to be immediately caught
@@ -69,7 +69,7 @@ class Debug {
 	}
 
     /**
-     * Handles exceptions that occured while inside the error handler. Prevents recursion.
+     * Handles exceptions that occurred while inside the error handler. Prevents recursion.
      * 
      * @param Exception  $exception Caught exception
      * @return void   
@@ -81,12 +81,12 @@ class Debug {
 	}
 
     /**
-     * Handles errors that occured while inside the error handler. Prevents recursion.
+     * Handles errors that occurred while inside the error handler. Prevents recursion.
      * 
      * @param string        $errno   Error number
      * @param string        $errstr  Error message
-     * @param string        $errfile File in which the error occured
-     * @param string        $errline Line at which the error occured
+     * @param string        $errfile File in which the error occurred
+     * @param string        $errline Line at which the error occurred
      * @return void    
      * @access public  
      * @static 

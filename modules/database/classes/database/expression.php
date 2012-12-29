@@ -7,7 +7,7 @@
 class Expression_Database{
 
     /**
-     * Part of query that shoud not be escaped
+     * Part of query that should not be escaped
      * @var mixed 
      * @access public  
      */
@@ -21,7 +21,7 @@ class Expression_Database{
 	 * $q->fields(DB::expr('COUNT(*)'));
 	 * </code>
      * 
-     * @param mixed $value Part of query that shoud not be escaped
+     * @param mixed $value Part of query that should not be escaped
      * @return Expression_Database    
      * @access public  
      */
