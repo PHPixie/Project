@@ -16,7 +16,7 @@ class Bootstrap{
      */
 	public static function autoload($class) {
 		$file = Misc::find_file('class', $class);
-		if ($file == false)
+		if (!$file)
 			throw new Exception("Class {$class} not found.");
 		require_once($file);
 	}
