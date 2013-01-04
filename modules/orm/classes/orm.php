@@ -122,7 +122,9 @@ class ORM {
      */
 	public function __construct() {
 		$this->query = DB::instance($this->connection)->query('select');
-		$this->model_name=strtolower(preg_replace('#_Model$#i', '', get_class($this)));
+		$this->model_name = strtolower(get_class($this));
+		if (substr($this->model_name, -6) == '_model') 
+			$this->model_name=substr($this->model_name,0,-6);
 		if ($this->table == null) 
 			$this->table = ORM::plural($this->model_name);
 		$this->query->table($this->table);
