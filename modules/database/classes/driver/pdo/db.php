@@ -12,7 +12,14 @@ class DB_PDO_Driver extends DB{
 	 * @link http://php.net/manual/en/class.pdo.php
      */
 	public $conn;
-
+	
+	/**
+     * Type of the database, e.g. mysql, pgsql etc.
+     * @var string 
+     * @access public 
+     */
+	public $db_type;
+	
     /**
      * Initializes database connection
      * 
@@ -26,6 +33,7 @@ class DB_PDO_Driver extends DB{
 			Config::get("database.{$config}.user",''),
 			Config::get("database.{$config}.password",'')
 		);
+		$this->db_type=strtolower(str_replace('PDO_', '', $this->conn->getAttribute(PDO::ATTR_DRIVER_NAME)));
 	}
 
     /**
@@ -47,6 +55,8 @@ class DB_PDO_Driver extends DB{
      * @access public 
      */
 	public function get_insert_id() {
+		if ($this->db_type == 'pgsql')
+			return $this->execute('SELECT lastval() as id')->current()->id;
 		return $this->conn->lastInsertId();
 	}
 
@@ -64,7 +74,6 @@ class DB_PDO_Driver extends DB{
 		$cursor = $this->conn->prepare($query);
 		if(!$cursor->execute($params))
 			throw new Exception("Database error: ".implode(' ',$this->conn->errorInfo())." \n in query:\n{$query}");
-
 		return new Result_PDO_Driver($cursor);
 	}
 }

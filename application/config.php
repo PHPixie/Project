@@ -18,7 +18,7 @@ Config::$data = array(
 			'connection'=>'mysql:host=localhost;dbname=phpixie',
 			
 			// 'db' and 'host' are required if you use Mysql driver
-			'db' => 'webcomics',
+			'db' => 'phpixie',
 			'host'=>'localhost'
 		)
 	)

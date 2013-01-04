@@ -23,8 +23,8 @@ class Misc{
 
     /**
      * Find full path to either a class or view by name. 
-	 * It will search in the /system folder first, then the /application folder
-	 * and then in all enabled modules.
+	 * It will search in the /application folder first, then all enabled modules
+	 * and then the /system folder
      * 
      * @param string  $type Type of the file to find. Either 'class' or 'view'
      * @param string $name Name of the file to find
@@ -33,10 +33,10 @@ class Misc{
      * @static 
      */
 	public static function find_file($type, $name) {
-		$folders = array(SYSDIR, APPDIR);
+		$folders = array(APPDIR);
 		foreach(Config::get('modules') as $module)
 			$folders[] = MODDIR.$module.'/';
-			
+		$folders[]=SYSDIR;
 		if($type=='class'){
 			$subfolder = 'classes/';
 			$dirs = array_reverse(explode('_', strtolower($name)));
