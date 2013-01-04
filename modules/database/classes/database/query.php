@@ -11,13 +11,16 @@
  * @method mixed data(array $data = null) Set data for insert or update queries.
  *               Without arguments returns current data, returns self otherwise.
  *
- * @method mixed limit(int $limit = null) Set number of rows to return.
+ * @method mixed limit(int $limit = null) Set number of rows to return. If NULL is passed than no limit is used.
+ *               If NULL is passed than no limit is used.
  *               Without arguments returns current limit, returns self otherwise.
  *
  * @method mixed offset(string $offset = null) Set the offset for the first row in result.
+ *               If NULL is passed than no offset is used.
  *               Without arguments returns current offset, returns self otherwise.
  *
  * @method mixed group_by(string $group_by = null) A column to group rows by for aggregator functions.
+ *               If NULL is passed than no grouping is done.
  *               Without arguments returns current group_by argument, returns self otherwise.
  *
  * @method mixed type(string $type = null) Set query type. Available types: select, update, insert, delete, count.
@@ -121,7 +124,7 @@ abstract class Query_Database {
      * @var array     
      * @access protected 
      */
-	protected $methods = array('table' => 'string','data' => 'array','limit' => 'integer','offset' => 'integer','group_by' => 'string','type' => 'string');
+	protected $methods = array('table' => 'string','data' => 'array','limit' => array('integer','NULL'),'offset' => array('integer','NULL'),'group_by' => array('string','NULL'),'type' => 'string');
 
     /**
      * Generates a query in format that can be executed on current database implementation
@@ -176,7 +179,6 @@ abstract class Query_Database {
 	 * @see $methods
      */
 	public function __call($method, $args) {
-		
 		if (isset($this->methods[$method])) {
 			
 			$property = '_'.$method;
@@ -185,9 +187,12 @@ abstract class Query_Database {
 				return $this->$property;
 			$val = $args[0];
 			if (is_int($val)) 
-				$val=(int) $val;
-			if (gettype($val) != $this->methods[$method])
-				throw new Exception("Method '{$method}' only accepts values of type: '{$this->methods[$method]}', '{$val}' was passed");
+				$val = (int) $val;
+			$allowed_types = $this->methods[$method];
+			if (!is_array($allowed_types))
+				$allowed_types=array($allowed_types);
+			if (!in_array(gettype($val),$allowed_types))
+				throw new Exception("Method '{$method}' only accepts values of type: ".implode(' or ',$allowed_types).", '{$val}' was passed");
 			$this->$property = $val;
 			return $this;
 		}

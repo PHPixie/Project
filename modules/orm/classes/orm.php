@@ -5,9 +5,11 @@
  * it is easy to setup and makes a lot of use of naming convention.
  *
  * @method mixed limit(int $limit = null) Set number of rows to return.
+ *               If NULL is passed than no limit is used.
  *               Without arguments returns current limit, returns self otherwise.
  *
  * @method mixed offset(int $offset = null) Set the offset for the first row in result.
+ *               If NULL is passed than no limit is used.
  *               Without arguments returns current offset, returns self otherwise.
  *
  * @method mixed orderby(string $column, string $dir) Adds a column to ordering parameters
@@ -192,8 +194,10 @@ class ORM {
      * @access public 
      */
 	public function find() {
-		$res=new ORMResult(get_class($this), $res=$this->query->limit(1)->execute());
-		return $res->current();
+		$set_limit=$this->limit();
+		$res = $this->limit(1)->find_all()->current();
+		$this->limit($set_limit);
+		return $res;
 	}
 
     /**
