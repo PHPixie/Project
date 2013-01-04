@@ -118,8 +118,8 @@ class Query_Mysql_Driver extends Query_Database{
 			if (!empty($this->_conditions)) {
 				$query.="WHERE ".$this->get_condition_query($this->_conditions,$params,true);
 			}
-			if (($this->_type == 'select' ||  $this->_type == 'count') && $this->_groupby!=null) {
-				$query.="GROUP BY ".$this->escape_field($this->_groupby);
+			if (($this->_type == 'select' ||  $this->_type == 'count') && $this->_group_by!=null) {
+				$query.="GROUP BY ".$this->escape_field($this->_group_by);
 			}
 			if (($this->_type == 'select' ||  $this->_type == 'count') && !empty($this->_having)) {
 				$query.="HAVING ".$this->get_condition_query($this->_having,$params,true);

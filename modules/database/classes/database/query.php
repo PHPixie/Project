@@ -17,8 +17,8 @@
  * @method mixed offset(string $offset = null) Set the offset for the first row in result.
  *               Without arguments returns current offset, returns self otherwise.
  *
- * @method mixed groupby(string $groupby = null) A column to group rows by for aggregator functions.
- *               Without arguments returns current groupby argument, returns self otherwise.
+ * @method mixed group_by(string $group_by = null) A column to group rows by for aggregator functions.
+ *               Without arguments returns current group_by argument, returns self otherwise.
  *
  * @method mixed type(string $type = null) Set query type. Available types: select, update, insert, delete, count.
  *               Without arguments returns current type argument, returns self otherwise.
@@ -107,7 +107,7 @@ abstract class Query_Database {
      * @var string   
      * @access protected 
      */
-	protected $_groupby;
+	protected $_group_by;
 
     /**
      * Last alias used on the table
@@ -121,7 +121,7 @@ abstract class Query_Database {
      * @var array     
      * @access protected 
      */
-	protected $methods = array('table' => 'string','data' => 'array','limit' => 'integer','offset' => 'integer','groupby' => 'string','type' => 'string');
+	protected $methods = array('table' => 'string','data' => 'array','limit' => 'integer','offset' => 'integer','group_by' => 'string','type' => 'string');
 
     /**
      * Generates a query in format that can be executed on current database implementation
