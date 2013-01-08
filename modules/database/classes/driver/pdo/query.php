@@ -178,7 +178,7 @@ class Query_PDO_Driver extends Query_Database {
 					}else {
 						$first=false;
 					}
-					$query.= $this->escape_field($order[0]);
+					$query.= $this->escape_field($order[0])." ";
 					if (isset($order[1])) {
 						$dir = strtoupper($order[1]);
 						$query.=$dir." ";
