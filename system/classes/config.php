@@ -17,13 +17,12 @@ class Config {
 	protected static $groups = array();
 	
 	/**
-     * Loads a group configuration file it has not been loaded before
-	 * and returns its options.
+     * Loads a group configuration file it has not been loaded before and
+	 * returns its options. If the group doesn't exist creates an empty one
      * 
      * @param string    $name Name of the configuration group to load
      * @return array    Array of options for this group
      * @access public    
-     * @throws Exception If a configuration file for this group does not exist
      * @static 
      */
 	public static function get_group($name) {
@@ -33,9 +32,12 @@ class Config {
 			$file = Misc::find_file('config', $name);
 			
 			if (!$file)
-				throw new Exception("Configuration file {$name}.php was not found.");
-				
-			Config::load_group($name,$file);
+				Config::$groups[$name] = array(
+					'file' => APPDIR.'config/'.$name.'.php',
+					'options' => array()
+				);
+			else
+				Config::load_group($name,$file);
 		}
 		
 		return Config::$groups[$name]['options'];
