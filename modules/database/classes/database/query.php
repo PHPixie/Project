@@ -25,6 +25,7 @@
  *
  * @method mixed type(string $type = null) Set query type. Available types: select, update, insert, delete, count.
  *               Without arguments returns current type argument, returns self otherwise.
+ * @package Database
  */
 abstract class Query_Database {
 

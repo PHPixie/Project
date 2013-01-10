@@ -2,6 +2,7 @@
 
 /**
  * Database result implementation for Mysqli
+ * @package Database
  */
 class Result_Mysql_Driver extends Result_Database {
 

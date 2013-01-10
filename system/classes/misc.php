@@ -22,40 +22,42 @@ class Misc{
 	}
 
     /**
-     * Find full path to either a class or view by name. 
-	 * It will search in the /application folder first, then all enabled modules
+     * Finds full path to a specified file
+	 * It will search in the /application folder first, then in all enabled modules
 	 * and then the /system folder
      * 
-     * @param string  $type Type of the file to find. Either 'class' or 'view'
-     * @param string $name Name of the file to find
-     * @return boolean Return Full path to the file or False if it is not found
+     * @param string  $subfolder  Subfolder to search in e.g. 'classes' or 'views'
+     * @param string  $name       Name of the file without extension
+	 * @param string  $extension  File extension
+	 * @param boolean $return_all If 'true' returns all mathced files as array,
+	 *                            otherwise returns the first file found
+     * @return mixed  Full path to the file or False if it is not found
      * @access public  
      * @static 
      */
-	public static function find_file($type, $name) {
+	public static function find_file($subfolder, $name, $extension = 'php', $return_all = false ) {
+		
 		$folders = array(APPDIR);
-		foreach(Config::get('modules') as $module)
+		
+		foreach(Config::get('core.modules',array()) as $module)
 			$folders[] = MODDIR.$module.'/';
-		$folders[]=SYSDIR;
-		if($type=='class'){
-			$subfolder = 'classes/';
-			$dirs = array_reverse(explode('_', strtolower($name)));
-			$fname = array_pop($dirs);
-			$subfolder.=implode('/',$dirs).'/';
-		}
-		
-		if ($type == 'view') {
-			$subfolder = 'views/';
-			$fname=$name;
-		}
+		$folders[] = SYSDIR;
 
-		foreach($folders as $folder) {
-			$file = $folder.$subfolder.$fname.'.php';
+		$fname=$name.'.'.$extension;
+		$found_files = array();
 		
+		foreach($folders as $folder) {
+			$file = $folder.$subfolder.'/'.$fname;
 			if (file_exists($file)) {
-				return($file);
+				if(!$return_all)
+					return($file);
+				$found_files[]=$file;
 			}
 		}
+		
+		if(!empty($found_files))
+			return $found_files;
+			
 		return false;
 	}
 }

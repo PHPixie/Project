@@ -15,10 +15,14 @@ class Bootstrap{
      * @static 
      */
 	public static function autoload($class) {
-		$file = Misc::find_file('class', $class);
-		if (!$file)
-			throw new Exception("Class {$class} not found.");
-		require_once($file);
+	
+		$path = array_reverse(explode('_', strtolower($class)));
+		$file = array_pop($path);
+		$path = 'classes/'.implode('/',$path);
+		$file = Misc::find_file($path, $file);
+		
+		if($file)	
+			require_once($file);
 	}
 	
     /**
@@ -58,15 +62,11 @@ class Bootstrap{
 		 * Configuration handler
 		 */
 		require_once('classes/config.php');
-
-		/**
-		 * Applications configuration file
-		 */
-		require_once('application/config.php');
 		
+		Config::load_group('core', 'application/config/core.php');
 		spl_autoload_register('Bootstrap::autoload');
 		Debug::init();
-		foreach(Config::get('routes') as $route)
+		foreach(Config::get('core.routes') as $route)
 			Route::add($route[0],$route[1],$route[2]);
 	}
 }

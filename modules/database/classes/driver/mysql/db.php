@@ -2,6 +2,7 @@
 
 /**
  * Mysqli Database Implementation
+ * @package Database
  */
 class DB_Mysql_Driver extends DB{
 

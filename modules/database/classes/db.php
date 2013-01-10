@@ -4,6 +4,7 @@
  * Database related functions. Creates connections,
  * executes queries and returns results. It is also the
  * generic connection class used by drivers.
+ * @package Database
  */
 abstract class DB {
 

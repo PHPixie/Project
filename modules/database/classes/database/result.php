@@ -3,6 +3,7 @@
 /**
  * Allows to access database results in a unified way and
  * provides iterator support, so it can be used inside loops like 'foreach'
+ * @package Database
  */
 abstract class Result_Database implements Iterator {
 

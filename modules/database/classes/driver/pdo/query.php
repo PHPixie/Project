@@ -2,6 +2,7 @@
 
 /**
  * PDO implementation of the database Query
+ * @package Database
  */
 class Query_PDO_Driver extends Query_Database {
 	
@@ -218,11 +219,11 @@ class Query_PDO_Driver extends Query_Database {
 			}else {
 				$param = $this->escape_value($p['value'],$params);
 			}
-			return $this->escape_field($p['field']).' '.$p['operator'].' '.$param;
+			return $this->escape_field($p['field']).' '.$p['operator'].' '.$param.' ';
 		}
 		if (isset($p['logic'])) {
 			return ($skip_first_operator?'':strtoupper($p['logic'])).' '
-					.$this->get_condition_query($p['conditions'],$params,false,$value_is_field);
+					.$this->get_condition_query($p['conditions'],$params,false,$value_is_field).' ';
 		}
 		
 		$conds = '';

@@ -2,6 +2,7 @@
 
 /**
  * Manages passing variables to templates and rendering them
+ * @package Core
  */
 class View{
 
@@ -86,9 +87,11 @@ class View{
 	public static function get($name){
 		$view = new View();
 		$view->name = $name;
-		$file = Misc::find_file('view', $name);
+		$file = Misc::find_file('views', $name);
+		
 		if ($file == false)
 			throw new Exception("View {$name} not found.");
+			
 		$view->path=$file;
 		return $view;
 	}

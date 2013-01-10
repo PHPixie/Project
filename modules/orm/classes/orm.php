@@ -17,6 +17,7 @@
  * @method mixed where(mixed $key, mixed $operator = null, mixed $val = null) behaves just like Query_Database::where()
  *
  * @see Query_Database::where()
+ * @package ORM
  */
 class ORM {
 

@@ -2,6 +2,7 @@
 
 /**
  * PDO Database implementation.
+ * @package Database
  */
 class DB_PDO_Driver extends DB{
 

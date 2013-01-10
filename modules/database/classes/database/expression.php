@@ -3,6 +3,7 @@
 /**
  * This class allows you to wrap fields or values that you don't want to be escaped
  * inside the query
+ * @package Database
  */
 class Expression_Database{
 

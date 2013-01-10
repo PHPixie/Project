@@ -7,6 +7,7 @@
  * returning ORM object instead of just data object.
  *
  * @see Database_Result
+ * @package ORM
  */
 class ORMResult implements Iterator {
 

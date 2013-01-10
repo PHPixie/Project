@@ -2,6 +2,7 @@
 
 /**
  * Database result implementation for PDO
+ * @package Database
  */
 class Result_PDO_Driver extends Result_Database {
 
