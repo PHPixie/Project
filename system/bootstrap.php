@@ -2,6 +2,7 @@
 
 /**
  * Bootstraps the system
+ * @package Core
  */
 class Bootstrap{
 
