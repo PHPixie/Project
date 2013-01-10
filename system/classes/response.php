@@ -2,6 +2,7 @@
 
 /**
  * Handles the response that is sent back to the client.
+ * @package Core
  */
 class Response {
 

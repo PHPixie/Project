@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Routing class to extract and parse request parameters from the URL
+ * Routing class to extract and parse request parameters from the URL.
+ * @package Core
  */
 class Route {
 

@@ -3,6 +3,7 @@
 /**
  * Base Controller class. Controllers contain the  logic of your website,
  * each action representing a reply to a particular request, e.g. a single page.
+ * @package Core
  */
 class Controller {
 

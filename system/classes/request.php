@@ -2,6 +2,7 @@
 
 /**
  * Handles client request.
+ * @package Core
  */
 class Request {
 

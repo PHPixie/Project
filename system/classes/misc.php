@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Miscellaneous useful functions
+ * Miscellaneous useful functions.
+ * @package Core
  */
 class Misc{
 

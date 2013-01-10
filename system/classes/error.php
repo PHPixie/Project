@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Short description for class
+ * Short description for class.
+ * @package Core
  */
 class Error {
 

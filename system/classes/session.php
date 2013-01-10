@@ -2,6 +2,7 @@
 
 /**
  * Simple class for accessing session data
+ * @package Core
  */
 class Session{
 

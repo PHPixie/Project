@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Handles error reporting and debugging
+ * Handles error reporting and debugging.
+ * @package Core
  */
 class Debug {
 
