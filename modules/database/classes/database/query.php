@@ -118,7 +118,7 @@ abstract class Query_Database {
      * @var string     
      * @access protected 
      */
-	protected $alias = null;
+	protected $_alias = null;
 
     /**
      * Methods and type of value they allow that are available via __call
@@ -336,7 +336,7 @@ abstract class Query_Database {
 		
 		if ((is_string($p[0]) || get_class($p[0]) == 'Expression_Database') && isset($p[1])) { 
 			if (strpos($p[0], '.') === false)
-				$p[0]=$this->lastAlias().'.'.$p[0];
+				$p[0]=$this->last_alias().'.'.$p[0];
 			return array(
 				'logic' => 'and',
 					'conditions'=>array(
@@ -356,10 +356,10 @@ abstract class Query_Database {
      * @return string  Last generated alias. If no alias were created returns table name.
      * @access public 
      */
-	public function lastAlias() {
-		if ($this->alias === null)
+	public function last_alias() {
+		if ($this->_alias === null)
 			return $this->_table;
-		return 'a'.$this->alias;
+		return 'a'.$this->_alias;
 	}
 
     /**
@@ -369,13 +369,13 @@ abstract class Query_Database {
      * @return string New alias
      * @access public  
      */
-	public function addAlias() {
-		if ($this->alias === null){
-			$this->alias = 0;
+	public function add_alias() {
+		if ($this->_alias === null){
+			$this->_alias = 0;
 		}else {
-			$this->alias++;
+			$this->_alias++;
 		}
-		return $this->lastAlias();
+		return $this->last_alias();
 	}
 	
 

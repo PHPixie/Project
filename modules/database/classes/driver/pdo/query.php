@@ -61,7 +61,7 @@ class Query_PDO_Driver extends Query_Database {
 			return $field->value.' ';
 		$field = explode('.', $field);
 		if (count($field) == 1)
-			array_unshift($field,$this->lastAlias());
+			array_unshift($field,$this->last_alias());
 		$str = $this->quote($field[0]).'.';
 		if (trim($field[1]) == '*')
 			return $str.'* ';
@@ -136,7 +136,7 @@ class Query_PDO_Driver extends Query_Database {
 				$query.= "SELECT COUNT(*) as {$this->quote('count')} FROM {$this->quote($this->_table)} ";	
 			}
 			if($this->_type=='delete')
-				$query.= "DELETE FROM {$this->quote($this->_table)} ";
+				$query.= "DELETE {$this->last_alias()}.* FROM {$this->quote($this->_table)} ";
 			if($this->_type=='update'){
 				$query.= "UPDATE {$this->quote($this->_table)} SET ";
 				$first = true;

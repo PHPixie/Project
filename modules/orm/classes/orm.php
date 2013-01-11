@@ -288,33 +288,33 @@ class ORM {
 			if ($this->loaded())
 				$model->query->where($this->id_field,$this->_row[$this->id_field]);
 			if ($target['type']=='has_many'&&isset($target['through'])) {
-				$lastAlias = $model->query->lastAlias();
-				$throughAlias=$model->query->addAlias();
-				$newAlias = $model->query->addAlias();
-				$model->query->join(array($target['through'], $throughAlias), array(
-					$lastAlias.'.'.$this->id_field,
-					$throughAlias.'.'.$target['key'],
+				$last_alias = $model->query->last_alias();
+				$through_alias=$model->query->add_alias();
+				$new_alias = $model->query->add_alias();
+				$model->query->join(array($target['through'], $through_alias), array(
+					$last_alias.'.'.$this->id_field,
+					$through_alias.'.'.$target['key'],
 				),'inner');
-				$model->query->join(array($model->table, $newAlias), array(
-					$throughAlias.'.'.$target['foreign_key'],
-					$newAlias.'.'.$model->id_field,
+				$model->query->join(array($model->table, $new_alias), array(
+					$through_alias.'.'.$target['foreign_key'],
+					$new_alias.'.'.$model->id_field,
 				),'inner');
 			}else{
-				$lastAlias = $model->query->lastAlias();
-				$newAlias = $model->query->addAlias();
+				$last_alias = $model->query->last_alias();
+				$new_alias = $model->query->add_alias();
 				if ($target['type'] == 'belongs_to') {
-					$model->query->join(array($model->table, $newAlias), array(
-						$lastAlias.'.'.$target['key'],
-						$newAlias.'.'.$model->id_field,
+					$model->query->join(array($model->table, $new_alias), array(
+						$last_alias.'.'.$target['key'],
+						$new_alias.'.'.$model->id_field,
 					),'inner');
 				}else {
-					$model->query->join(array($model->table, $newAlias), array(
-						$lastAlias.'.'.$this->id_field,
-						$newAlias.'.'.$target['key'],
+					$model->query->join(array($model->table, $new_alias), array(
+						$last_alias.'.'.$this->id_field,
+						$new_alias.'.'.$target['key'],
 					), 'inner');
 				}
 			}
-			$model->query->fields(array("$newAlias.*"));
+			$model->query->fields(array("$new_alias.*"));
 			if ($target['type'] != 'has_many' && $model->loaded() ) {
 				$model = $model->find();
 				$this->_cached[$column]=$model;

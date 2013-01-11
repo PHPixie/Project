@@ -73,8 +73,10 @@ class DB_PDO_Driver extends DB{
      */
 	public function execute($query, $params = array()) {
 		$cursor = $this->conn->prepare($query);
-		if(!$cursor->execute($params))
-			throw new Exception("Database error: ".implode(' ',$this->conn->errorInfo())." \n in query:\n{$query}");
+		if (!$cursor->execute($params)) {
+			$error = $cursor->errorInfo();
+			throw new Exception("Database error:\n".$error[2]." \n in query:\n{$query}");
+		}
 		return new Result_PDO_Driver($cursor);
 	}
 }
