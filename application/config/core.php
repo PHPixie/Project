@@ -8,5 +8,5 @@ return array(
 			)
 		)
 	),
-	'modules' => array('database', 'orm','email')
+	'modules' => array('database', 'orm')
 );
