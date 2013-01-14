@@ -94,7 +94,7 @@ class Config {
 				break;
 		}
 		
-		if (isset($p[1]))
+		if (array_key_exists (1,$p))
 			return $p[1];
 			
 		throw new Exception("Configuration not set for {$p[0]}.");

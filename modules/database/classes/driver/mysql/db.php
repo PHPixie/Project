@@ -13,7 +13,14 @@ class DB_Mysql_Driver extends DB{
 	 * @link http://php.net/manual/en/class.mysqli.php
      */
 	public $conn;
-
+	
+	/**
+     * Type of the database, mysql.
+     * @var string 
+     * @access public 
+     */
+	public $db_type='mysql';
+	
     /**
      * Initializes database connection
      * 
