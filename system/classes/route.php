@@ -91,7 +91,7 @@ class Route {
 				$pattern=preg_replace_callback('/<.*?>/',
 					function($str) use ($rule){
 						$str=$str[0];
-						$regexp='[a-zA-Z0-9\-\._\~]+';
+						$regexp='[a-zA-Z0-9\-\._]+';
 						if(is_array($rule))
 							$regexp=Misc::arr($rule[1],str_replace(array('<','>'),'',$str),$regexp);
 						return '(?P'.$str.$regexp.')';
