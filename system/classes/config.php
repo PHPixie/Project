@@ -82,7 +82,8 @@ class Config {
 		$keys = explode('.', $p[0]);
 		$group_name = array_shift($keys);
 		$group = Config::get_group($group_name);
-		
+		if (empty($keys))
+			return $group;
 		for ($i = 0; $i < count($keys); $i++) {
 			if ($i == count($keys) - 1) {
 				if (isset($group[$keys[$i]]))
@@ -112,7 +113,7 @@ class Config {
 		$keys = explode('.', $key);
 		$group_name = array_shift($keys);
 		$group = Config::get_group($group_name);
-		$subgroup = & $group;
+		$subgroup = &$group;
 		
 		foreach($keys as $i => $key) {
 		

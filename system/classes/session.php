@@ -55,4 +55,30 @@ class Session{
 		Session::check();
 		$_SESSION[$key]=$val;
 	}
+	
+	/**
+     * Removes a session variable
+     * 
+     * @param string $key Variable name
+     * @return void    
+     * @access public  
+     * @static 
+     */
+	public static function remove($key) {
+		Session::check();
+		$var = $_SESSION[$key];
+		unset($_SESSION[$key], $var);
+	}
+	
+	/**
+     * Resets the session
+     * 
+     * @return void    
+     * @access public  
+     * @static 
+     */
+	public static function reset() {
+		Session::check();
+		$_SESSION=array();
+	}
 }
