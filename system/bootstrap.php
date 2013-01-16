@@ -23,7 +23,7 @@ class Bootstrap{
 		$file = Misc::find_file($path, $file);
 		
 		if($file)	
-			require_once($file);
+			include($file);
 	}
 	
     /**
@@ -57,12 +57,12 @@ class Bootstrap{
 		/**
 		 * Helper functions
 		 */
-		require_once('classes/misc.php');
+		include('classes/misc.php');
 
 		/**
 		 * Configuration handler
 		 */
-		require_once('classes/config.php');
+		include('classes/config.php');
 		
 		Config::load_group('core', 'application/config/core.php');
 		spl_autoload_register('Bootstrap::autoload');
