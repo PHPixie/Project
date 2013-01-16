@@ -86,7 +86,9 @@ class Request {
      * @access public 
      */
 	public function execute() {
-		$controller=$this->param('controller').'_Controller';
+		$controller = $this->param('controller').'_Controller';
+		if (!class_exists($controller))
+			throw new Exception("Class {$controller} doesn't exist",404);
 		$controller = new $controller;
 		$controller->request = $this;
 		$controller->run($this->param('action'));

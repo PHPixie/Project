@@ -7,13 +7,6 @@
 class Debug {
 
     /**
-     * Caught exception
-     * @var Exception 
-     * @access public  
-     */
-	public $exception;
-
-    /**
      * An array of logged items
      * @var array  
      * @access public 
@@ -27,10 +20,10 @@ class Debug {
      * @return void   
      * @access public 
      */
-	public function render() {
+	public function render_error($exception) {
 		ob_end_clean();
 		$view = View::get('debug');
-		$view->exception = $this->exception;
+		$view->exception = $exception;
 		$view->log = Debug::$logged;
 		header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found"); 
 		header("Status: 404 Not Found");
@@ -38,7 +31,9 @@ class Debug {
 	}
 
     /**
-     * Catches errors and exceptions and processes them
+     * Catches errors and exceptions and sends them
+	 * to the configured handler if one is present,
+	 * otherwise render_error() will be called.
      * 
      * @param Exception $exception Caught exception
      * @return void    
@@ -48,9 +43,8 @@ class Debug {
 	public static function onError($exception) {
 		set_exception_handler(array('Debug', 'internalException'));
 		set_error_handler ( array('Debug', 'internalError'), E_ALL);
-		$error = new Debug();
-		$error->exception = $exception;
-		$error->render();
+		$handler = Config::get('core.error_handler', 'Debug::render_error');
+		call_user_func($handler,$exception);
 	}
 
     /**

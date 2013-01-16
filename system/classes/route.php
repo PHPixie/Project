@@ -109,15 +109,15 @@ class Route {
 			}
 		}
 		if($matched==false)
-			throw new Exception('No route matched your request');
+			throw new Exception('No route matched your request',404);
 		$rule=Route::$rules[$matched];
 
 		$params=array_merge($rule['defaults'],$data);
 		
 		if(!isset($params['controller']))
-			throw new Exception("Route {$matched} matched, but no controller was defined for this route");
+			throw new Exception("Route {$matched} matched, but no controller was defined for this route",404);
 		if(!isset($params['action']))
-			throw new Exception("Route {$matched} matched with controller {$params['controller']}, but no action was defined for this route");
+			throw new Exception("Route {$matched} matched with controller {$params['controller']}, but no action was defined for this route",404);
 		
 		$route=Route::get($matched);
 		$route->params=$params;
