@@ -84,21 +84,19 @@ class Config {
 		$group = Config::get_group($group_name);
 		if (empty($keys))
 			return $group;
-		for ($i = 0; $i < count($keys); $i++) {
-			if ($i == count($keys) - 1) {
-				if (isset($group[$keys[$i]]))
-					return $group[$keys[$i]];
-				break;
-			}
-			$group = Misc::arr($group, $keys[$i], null);
-			if (!is_array($group))
-				break;
-		}
-		
-		if (array_key_exists (1,$p))
-			return $p[1];
 			
-		throw new Exception("Configuration not set for {$p[0]}.");
+		$total=count($keys);
+		foreach($keys as $i => $key) {
+			if (isset($group[$key])) {
+				if ($i == $total - 1)
+					return $group[$key];
+				$group=&$group[$key];
+			}else {
+				if (array_key_exists (1,$p))
+					return $p[1];
+				throw new Exception("Configuration not set for {$p[0]}.");
+			}
+		}
 	}
 	
 	/**
