@@ -15,18 +15,32 @@ class Debug {
 	public static $logged=array();
 
     /**
-     * Displays the error page
+     * Displays the error page. If you have 'silent_errors' enabled in
+	 * core.php config file, a small message will be shown instead.
      * 
      * @return void   
      * @access public 
      */
 	public function render_error($exception) {
 		ob_end_clean();
+		
+		if($exception->getCode()==404){
+			$status='404 Not Found';
+		}else {
+			$status='503 Service Temporarily Unavailable';
+		}
+		
+		header($_SERVER["SERVER_PROTOCOL"].' '.$status); 
+		header("Status: {$status}");
+		
+		if (Config::get('core.errors.silent', false)) {
+			echo $status;
+			return;
+		}
+		
 		$view = View::get('debug');
 		$view->exception = $exception;
 		$view->log = Debug::$logged;
-		header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found"); 
-		header("Status: 404 Not Found");
 		echo $view->render();
 	}
 
@@ -43,7 +57,7 @@ class Debug {
 	public static function onError($exception) {
 		set_exception_handler(array('Debug', 'internalException'));
 		set_error_handler ( array('Debug', 'internalError'), E_ALL);
-		$handler = Config::get('core.error_handler', 'Debug::render_error');
+		$handler = Config::get('core.errors.handler', 'Debug::render_error');
 		call_user_func($handler,$exception);
 	}
 
