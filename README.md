@@ -20,20 +20,20 @@ What to expect:
 
 * Super Fast
 
-  PHPixie was designed with speed in mind to provide lightning fast performance.
+  PHPixie was designed with speed in mind to provide lightning fast performance. [source](http://phpixie.com/blog/php-framework-benchmark/)
 
 * Well documented
 
-  Avoids as much boilerplate as possible to reduce your webserver load.
+  Thorough documentation for the entire application.
 
 * Rapid development
 
-  Avoids as much boilerplate as possible to reduce your webserver load.
+  PHPixie gets out of the way and lets you write code the way you want.
 
 * Automagic
 
-  Avoids as much boilerplate as possible to reduce your webserver load.
+  Automating key functions in the framework to facilitate a faster approach to application development.
 
 * Write your own code
 
-  Takes care of the foundation and lets you shape the rest any way you like.
+  PHPixie handles the foundation and lets you shape the rest any way you like.
