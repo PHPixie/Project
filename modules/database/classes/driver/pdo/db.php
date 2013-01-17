@@ -60,7 +60,26 @@ class DB_PDO_Driver extends DB{
 			return $this->execute('SELECT lastval() as id')->current()->id;
 		return $this->conn->lastInsertId();
 	}
-
+	
+	public function list_columns($table) {
+		$columns=array();
+		if ($this->db_type == 'mysql') {
+			$table_desc = $this->execute("DESCRIBE `$table`");
+			foreach($table_desc as $column)
+				$columns[]=$column->Field;
+		}
+		if ($this->db_type == 'pgsql') {
+			$table_desc = $this->execute("select column_name from information_schema.columns where table_name = '{$table}' and table_catalog=current_database();");
+			foreach($table_desc as $column)
+				$columns[]=$column->column_name;
+		}
+		if ($this->db_type == 'sqlite') {
+			$table_desc = $this->execute("PRAGMA table_info('$table')");
+			foreach($table_desc as $column)
+				$columns[]=$column->name;
+		}
+		return $columns;
+	}
     /**
      * Executes a prepared statement query
      * 

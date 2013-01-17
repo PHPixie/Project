@@ -34,9 +34,10 @@ class ORMResult implements Iterator {
      * @return void    
      * @access public  
      */
-	public function __construct($model,$dbresult){
+	public function __construct($model,$dbresult,$relations=array()){
 		$this->_model=$model;
 		$this->_dbresult = $dbresult;
+		print_r($this->_dbresult->current());die;
 	}
 
     /**

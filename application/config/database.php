@@ -4,7 +4,7 @@ return array(
 	'default' => array(
 		'user'=>'root',
 		'password' => '',
-		'driver' => 'mysql',
+		'driver' => 'pdo',
 		
 		//'Connection' is required if you use the PDO driver
 		'connection'=>'mysql:host=localhost;dbname=phpixie',

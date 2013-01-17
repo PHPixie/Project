@@ -44,6 +44,8 @@ abstract class DB {
      * @access public 
      */
 	public abstract function get_insert_id();
+	
+	public abstract function list_columns($table);
 
     /**
      * Executes a named query where parameters are passed as an associative array
