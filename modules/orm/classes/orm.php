@@ -315,7 +315,7 @@ class ORM {
 				}
 			}
 			$model->query->fields(array("$new_alias.*"));
-			if ($target['type'] != 'has_many' && $model->loaded() ) {
+			if ($target['type'] != 'has_many' && $this->loaded() ) {
 				$model = $model->find();
 				$this->_cached[$column]=$model;
 			}
