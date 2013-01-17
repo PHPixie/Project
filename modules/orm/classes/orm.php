@@ -67,9 +67,9 @@ class ORM {
     /**
      * An instance of the database connection
      * @var DB 
-     * @access private 
+     * @access protected 
      */
-	private $db;
+	protected $db;
 
     /**
      * Current row returned by the database
@@ -88,9 +88,9 @@ class ORM {
     /**
      * A flag whether the row was loaded from the database
      * @var boolean 
-     * @access private 
+     * @access protected 
      */
-	private $_loaded = false;
+	protected $_loaded = false;
 
     /**
      * The name of the model
@@ -102,9 +102,11 @@ class ORM {
     /**
      * Cached properties
      * @var array   
-     * @access private 
+     * @access protected 
      */
-	private $_cached = array();
+	protected $_cached = array();
+	
+	protected static $_column_cache = array();
 	
     /**
      * Constructs the model. To use ORM it is enough to 
@@ -150,7 +152,9 @@ class ORM {
 				
 				if ($rels == 'has_many' && isset($rel['through']))
 					if (!isset($rel['foreign_key']))
-						$normalized[$key]['foreign_key']=$rel['model'].'_id';
+						$normalized[$key]['foreign_key'] = $rel['model'].'_id';
+						
+				$normalized[$key]['name']=$key;
 			}
 			$this->$rels=$normalized;
 			
@@ -184,7 +188,34 @@ class ORM {
      * @access public 
      */
 	public function find_all() {
-		return new ORMResult(get_class($this), $res=$this->query->execute());
+		
+		$relations = array();
+		$model_alias = $this->query->last_alias();
+		$fields=array("{$model_alias}.*");
+		foreach($this->_with as $rel) {
+			
+			$model = ORM::factory($rel['model']);
+			$alias = $model->query->add_alias();
+			$relations[$rel['name']] = $alias;
+			
+			if ($rel['type'] == 'belongs_to') {
+				$this->query->join(array($model->table, $alias), array(
+					$model_alias.'.'.$rel['key'],
+					$alias.'.'.$model->id_field,
+				),'left');
+			}else {
+				$this->query->join(array($model->table, $alias), array(
+					$model_alias.'.'.$this->id_field,
+					$alias.'.'.$rel['key'],
+				), 'left');
+			}
+			$fields[]="{$alias}.*";
+		}
+	
+		$this->query->fields($fields);
+		print_r($this->query->query());
+		die;
+		return new ORMResult(get_class($this), $res=$this->query->execute(),$model_alias,$relations);
 	}
 
     /**
@@ -431,7 +462,7 @@ class ORM {
 					array($rel['key'],$this->_row[$this->id_field]),
 					array($rel['foreign_key'],$model->_row[$model->id_field])
 				))
-				->execute();
+				->execute(); 
 		}else {
 			$key=$rel['key'];
 			$model->$key = null;
@@ -439,7 +470,21 @@ class ORM {
 		}
 		$this->_cached=array();
 	}
-
+	
+	protected $_with = array();
+	public function columns() {
+		if (!isset(ORM::$_column_cache[$this->table]))
+			ORM::$_column_cache[$this->table] = array_keys(DB::instance($this->connection)->list_columns($this->table));
+		return ORM::$_column_cache[$this->table];
+	}
+	public function with($relation) {
+		$rels = array_merge($this->has_one, $this->has_many,$this->belongs_to);
+		$rel = Misc::arr($rels, $relation, false);
+		if (!$rel)
+			throw new Exception("Model doesn't have a '{$relation}' relation defined");
+		$this->_with[] = $rel;
+		return $this;
+	}
     /**
      * Deletes current item from the database
      * 

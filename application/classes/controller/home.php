@@ -2,9 +2,7 @@
 class Home_Controller extends Controller {
 
 	public function action_index(){
-		$view = View::get('home');
-		$view->message = 'Have fun coding!';
-		$this->response->body=$view->render();
+		print_r(ORM::factory('fairy')->with('tree')->find_all()->as_array(true));
 	}
 		
 }
