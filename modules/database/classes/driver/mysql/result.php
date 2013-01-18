@@ -16,7 +16,8 @@ class Result_Mysql_Driver extends Result_Database {
      */
 	public function __construct($result) {
 		$this->_result = $result;
-		$this->_row=$this->_result->fetch_object();
+		if(!empty($result))
+			$this->_row=$this->_result->fetch_object();
 	}
 
     /**

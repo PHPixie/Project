@@ -1,0 +1,1 @@
+<h3><?php echo $poll->question; ?></h3>
