@@ -212,11 +212,8 @@ class ORM {
 			$model = $this;
 			$model_alias=$this_alias;
 			$rels = explode('.', $target);
-			Debug::log($rels);
 			foreach($rels as $key => $rel_name) {
 				$path = implode('.', array_slice($rels, 0, $key + 1));
-				Debug::log($path);
-				Debug::log('ggg'.$model->model_name);
 				if (isset($paths[$path])) {
 					$model = $paths[$path]['model'];
 					$model_alias=$paths[$path]['alias'];
@@ -230,7 +227,6 @@ class ORM {
 					throw new Exception("Model '{$model->model_name}' doesn't have a '{$rel_name}' relation defined");
 				if ($rel['type'] == 'has_many')
 					throw new Exception("Relationship '{$rel_name}' is of has_many type and cannot be preloaded view with()");
-				Debug::log('rrr'.$rel['model']);
 				$rel_model = ORM::factory($rel['model']);
 				
 				if ($rel['type'] == 'belongs_to') {
