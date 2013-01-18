@@ -148,9 +148,14 @@ abstract class Query_Database {
 	}
 
     /**
-     * Sets fields to be queried from the database
-     * 
-	 * @param mixed A single field or an array of them
+     * Sets fields to be queried from the database. You can add aliases to the fields
+	 * by passing them as: 
+	 *
+	 * array('field_name','alias')
+     *
+	 * Example: $query->fields('id', array('name', 'fairy_name'))
+	 *
+	 * @param mixed   $field,...   Fields to be selected from the table
      * @return mixed  If no parameters are passed returns current array of fields,
 	 *                otherwise returns self.
      * @access public 
@@ -159,10 +164,8 @@ abstract class Query_Database {
 		$p = func_get_args();
 		if (empty($p)) {
 			return $this->_fields;
-		}elseif (is_array($p[0])) {
-			$this->_fields=$p[0];
-		}else {
-			$this->_fields=array($p[0]);
+		}else{
+			$this->_fields=$p;
 		}
 		return $this;
 	}

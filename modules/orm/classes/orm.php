@@ -64,6 +64,27 @@ class ORM {
      */
 	protected $has_many = array();
 
+	/**
+     * Associated query builder
+     * @var Query_Database 
+     * @access public 
+     */
+	public $query;
+
+    /**
+     * The name of the model
+     * @var string 
+     * @access public 
+     */
+	public $model_name;
+
+    /**
+     * Cached properties
+     * @var array   
+     * @access public 
+     */
+	public $cached = array();
+	
     /**
      * An instance of the database connection
      * @var DB 
@@ -77,14 +98,7 @@ class ORM {
      * @access protected 
      */
 	protected $_row = array();
-
-    /**
-     * Associated query builder
-     * @var Query_Database 
-     * @access public 
-     */
-	public $query;
-
+	
     /**
      * A flag whether the row was loaded from the database
      * @var boolean 
@@ -92,21 +106,21 @@ class ORM {
      */
 	protected $_loaded = false;
 
-    /**
-     * The name of the model
-     * @var string 
-     * @access public 
-     */
-	public $model_name;
-
-    /**
-     * Cached properties
-     * @var array   
-     * @access protected 
-     */
-	protected $_cached = array();
 	
+	/**
+     * Relationships to be preloaded
+     * @var array   
+     * @access protected
+     */
+	protected $_with = array();
+	
+	/**
+     * Cached column names for tables
+     * @var array   
+     * @access protected
+     */
 	protected static $_column_cache = array();
+	
 	
     /**
      * Constructs the model. To use ORM it is enough to 
@@ -185,37 +199,62 @@ class ORM {
      * Finds all rows that meet set criteria.
      * 
      * @return ORMResult Returns ORMResult that you can use in a 'foreach' loop.
+	 * @throw  Exception If the relationship specified using with() does not exist or is not of the belongs_to or has_one type
      * @access public 
      */
 	public function find_all() {
-		
-		$relations = array();
-		$model_alias = $this->query->last_alias();
-		$fields=array("{$model_alias}.*");
-		foreach($this->_with as $rel) {
-			
-			$model = ORM::factory($rel['model']);
-			$alias = $model->query->add_alias();
-			$relations[$rel['name']] = $alias;
-			
-			if ($rel['type'] == 'belongs_to') {
-				$this->query->join(array($model->table, $alias), array(
-					$model_alias.'.'.$rel['key'],
-					$alias.'.'.$model->id_field,
-				),'left');
-			}else {
-				$this->query->join(array($model->table, $alias), array(
-					$model_alias.'.'.$this->id_field,
-					$alias.'.'.$rel['key'],
-				), 'left');
+		$paths = array();
+		$fields = array();
+		$this_alias=$this->query->last_alias();
+		foreach($this->columns() as $column)
+				$fields[]=array("{$this_alias}.{$column}","{$this_alias}__{$column}");
+		foreach($this->_with as $target) {
+			$model = $this;
+			$model_alias=$this_alias;
+			$rels = explode('.', $target);
+			Debug::log($rels);
+			foreach($rels as $key => $rel_name) {
+				$path = implode('.', array_slice($rels, 0, $key + 1));
+				Debug::log($path);
+				Debug::log('ggg'.$model->model_name);
+				if (isset($paths[$path])) {
+					$model = $paths[$path]['model'];
+					$model_alias=$paths[$path]['alias'];
+					continue;
+				}
+				$alias=$this->query->add_alias();
+				$model_rels = array_merge($model->has_one, $model->has_many,$model->belongs_to);
+				$rel = Misc::arr($model_rels, $rel_name, false);
+				
+				if (!$rel)
+					throw new Exception("Model '{$model->model_name}' doesn't have a '{$rel_name}' relation defined");
+				if ($rel['type'] == 'has_many')
+					throw new Exception("Relationship '{$rel_name}' is of has_many type and cannot be preloaded view with()");
+				Debug::log('rrr'.$rel['model']);
+				$rel_model = ORM::factory($rel['model']);
+				
+				if ($rel['type'] == 'belongs_to') {
+					$this->query->join(array($rel_model->table, $alias), array(
+						$model_alias.'.'.$rel['key'],
+						$alias.'.'.$rel_model->id_field,
+					),'left');
+				}else {
+					$this->query->join(array($rel_model->table, $alias), array(
+						$model_alias.'.'.$model->id_field,
+						$alias.'.'.$rel['key'],
+					), 'left');
+				}
+				
+				foreach($rel_model->columns() as $column)
+					$fields[]=array("{$alias}.{$column}","{$alias}__{$column}");
+				$model = $rel_model;
+				$model_alias = $alias;
+				$paths[$path] = array('alias' => $alias, 'model' => $model);
 			}
-			$fields[]="{$alias}.*";
 		}
-	
-		$this->query->fields($fields);
-		print_r($this->query->query());
-		die;
-		return new ORMResult(get_class($this), $res=$this->query->execute(),$model_alias,$relations);
+		
+		call_user_func_array(array($this->query,'fields'),$fields);
+		return new ORMResult(get_class($this), $res=$this->query->execute(),$paths);
 	}
 
     /**
@@ -305,10 +344,10 @@ class ORM {
 	public function __get($column) {
 		if (array_key_exists($column,$this->_row))
 			return $this->_row[$column];
-		if (array_key_exists($column,$this->_cached))
-			return $this->_cached[$column];
+		if (array_key_exists($column,$this->cached))
+			return $this->cached[$column];
 		if (($val = $this->get($column))!==null) {
-			$this->_cached[$column] = $val;
+			$this->cached[$column] = $val;
 			return $val;
 		}
 		$relations = array_merge($this->has_one, $this->has_many, $this->belongs_to);
@@ -348,7 +387,7 @@ class ORM {
 			$model->query->fields(array("$new_alias.*"));
 			if ($target['type'] != 'has_many' && $this->loaded() ) {
 				$model = $model->find();
-				$this->_cached[$column]=$model;
+				$this->cached[$column]=$model;
 			}
 			return $model;
 		}
@@ -374,7 +413,7 @@ class ORM {
 		}else{
 			$this->_row[$column] = $val;
 		}
-		$this->_cached=array();
+		$this->cached=array();
 	}
 
     /**
@@ -425,7 +464,7 @@ class ORM {
 			$model->$key = $this->_row[$this->id_field];
 			$model->save();
 		}
-		$this->_cached=array();
+		$this->cached=array();
 	}
 
     /**
@@ -468,21 +507,33 @@ class ORM {
 			$model->$key = null;
 			$model->save();
 		}
-		$this->_cached=array();
+		$this->cached=array();
 	}
 	
-	protected $_with = array();
+	/**
+     * Gets name column names of the table associated with the model.
+     * 
+     * @return array   Array of column names
+     * @access public    
+     */
 	public function columns() {
 		if (!isset(ORM::$_column_cache[$this->table]))
-			ORM::$_column_cache[$this->table] = array_keys(DB::instance($this->connection)->list_columns($this->table));
+			ORM::$_column_cache[$this->table] = DB::instance($this->connection)->list_columns($this->table);
 		return ORM::$_column_cache[$this->table];
 	}
-	public function with($relation) {
-		$rels = array_merge($this->has_one, $this->has_many,$this->belongs_to);
-		$rel = Misc::arr($rels, $relation, false);
-		if (!$rel)
-			throw new Exception("Model doesn't have a '{$relation}' relation defined");
-		$this->_with[] = $rel;
+	
+	/**
+     * Defines which relationships should be preloaded. You can only preload
+	 * belongs_to and has_one relationships. You can use the dot notation to
+	 * preload deep relationsips, e.g. 'tree.protector' will preload the tree
+	 * that a fairy lives in and also preload the protector of that tree.
+     * 
+	 * @param string $relationsip,...   List of relationships to preload
+     * @return ORM   Returns itself      
+     * @access public    
+     */
+	public function with() {
+		$this->_with = func_get_args();
 		return $this;
 	}
     /**
@@ -499,7 +550,7 @@ class ORM {
 			->table($this->table)
 			->where($this->id_field, $this->_row[$this->id_field])
 			->execute();
-		$this->_cached=array();
+		$this->cached=array();
 	}
 
     /**
@@ -561,7 +612,7 @@ class ORM {
 		$this->_row = array_merge($this->_row, $row);
 		if ($set_loaded)
 			$this->_loaded = true;
-		$this->_cached=array();
+		$this->cached=array();
 		return $this;
 	}
 

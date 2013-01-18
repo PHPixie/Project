@@ -127,7 +127,11 @@ class Query_PDO_Driver extends Query_Database {
 						}else {
 							$first = false;
 						}
-						$query.="{$this->escape_field($f)} ";
+						if(is_array($f)){
+							$query.= "{$this->escape_field($f[0])} AS {$f[1]} ";
+						}else {
+							$query.= "{$this->escape_field($f)} ";
+						}
 					}
 				}
 				$query.= "FROM {$this->quote($this->_table)} ";

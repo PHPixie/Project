@@ -25,19 +25,33 @@ class ORMResult implements Iterator {
      */
 	private $_dbresult;
 
+	/**
+     * Rules for preloaded relationships
+     * @var array
+     * @access private 
+     */
+	private $_with = array();
+	
     /**
      * Initialized an ORMResult with which model to use and which result to
 	 * iterate over
      * 
-     * @param string $model  Model name
+     * @param string          $model  Model name
      * @param Result_Database $dbresult Database result
+	 * @param array           $with Array of rules for preloaded relationships
      * @return void    
      * @access public  
      */
-	public function __construct($model,$dbresult,$relations=array()){
+	public function __construct($model,$dbresult,$with=array()){
 		$this->_model=$model;
 		$this->_dbresult = $dbresult;
-		print_r($this->_dbresult->current());die;
+		foreach($with as $path => $rel)
+			$this->_with[] = array(
+				'path' => explode('.',$path),
+				'path_count' => count(explode('.',$path)),
+				'model' => $rel['model'],
+				'columns' =>  $rel['model']->columns()
+			);
 	}
 
     /**
@@ -58,9 +72,36 @@ class ORMResult implements Iterator {
      */
     function current() {
         $model = new $this->_model;
+		
 		if (!$this->_dbresult->valid())
 			return $model;
-		$model->values((array)$this->_dbresult->current(),true);
+			
+		if(empty($this->_with))
+			return $model->values((array)$this->_dbresult->current(), true);
+			
+		$data = (array)$this->_dbresult->current();
+		
+		$model_data=array();
+		foreach($model->columns() as $column)
+			$model_data[$column] = array_shift($data);
+		$model->values($model_data, true);
+		
+		foreach($this->_with as $rel) {
+			$rel_data = array();
+			foreach($rel['columns'] as $column)
+				$rel_data[$column] = array_shift($data);
+			$rel['model']->values($rel_data, true);
+			
+			$owner = $model;
+			foreach($rel['path'] as $key => $child) {
+				if ($key == $rel['path_count'] - 1) {
+					$owner->cached[$child]=$rel['model'];
+				}else {
+					$owner=$owner->cached[$child];
+				}
+			}
+		}
+		
 		return $model;
     }
 
