@@ -204,52 +204,54 @@ class ORM {
      */
 	public function find_all() {
 		$paths = array();
-		$fields = array();
-		$this_alias=$this->query->last_alias();
-		foreach($this->columns() as $column)
-				$fields[]=array("{$this_alias}.{$column}","{$this_alias}__{$column}");
-		foreach($this->_with as $target) {
-			$model = $this;
-			$model_alias=$this_alias;
-			$rels = explode('.', $target);
-			foreach($rels as $key => $rel_name) {
-				$path = implode('.', array_slice($rels, 0, $key + 1));
-				if (isset($paths[$path])) {
-					$model = $paths[$path]['model'];
-					$model_alias=$paths[$path]['alias'];
-					continue;
+		if(!empty($this->_with)){
+			$fields = array();
+			$this_alias=$this->query->last_alias();
+			foreach($this->columns() as $column)
+					$fields[]=array("{$this_alias}.{$column}","{$this_alias}__{$column}");
+			foreach($this->_with as $target) {
+				$model = $this;
+				$model_alias=$this_alias;
+				$rels = explode('.', $target);
+				foreach($rels as $key => $rel_name) {
+					$path = implode('.', array_slice($rels, 0, $key + 1));
+					if (isset($paths[$path])) {
+						$model = $paths[$path]['model'];
+						$model_alias=$paths[$path]['alias'];
+						continue;
+					}
+					$alias=$this->query->add_alias();
+					$model_rels = array_merge($model->has_one, $model->has_many,$model->belongs_to);
+					$rel = Misc::arr($model_rels, $rel_name, false);
+					
+					if (!$rel)
+						throw new Exception("Model '{$model->model_name}' doesn't have a '{$rel_name}' relation defined");
+					if ($rel['type'] == 'has_many')
+						throw new Exception("Relationship '{$rel_name}' is of has_many type and cannot be preloaded view with()");
+					$rel_model = ORM::factory($rel['model']);
+					
+					if ($rel['type'] == 'belongs_to') {
+						$this->query->join(array($rel_model->table, $alias), array(
+							$model_alias.'.'.$rel['key'],
+							$alias.'.'.$rel_model->id_field,
+						),'left');
+					}else {
+						$this->query->join(array($rel_model->table, $alias), array(
+							$model_alias.'.'.$model->id_field,
+							$alias.'.'.$rel['key'],
+						), 'left');
+					}
+					
+					foreach($rel_model->columns() as $column)
+						$fields[]=array("{$alias}.{$column}","{$alias}__{$column}");
+					$model = $rel_model;
+					$model_alias = $alias;
+					$paths[$path] = array('alias' => $alias, 'model' => $model);
 				}
-				$alias=$this->query->add_alias();
-				$model_rels = array_merge($model->has_one, $model->has_many,$model->belongs_to);
-				$rel = Misc::arr($model_rels, $rel_name, false);
-				
-				if (!$rel)
-					throw new Exception("Model '{$model->model_name}' doesn't have a '{$rel_name}' relation defined");
-				if ($rel['type'] == 'has_many')
-					throw new Exception("Relationship '{$rel_name}' is of has_many type and cannot be preloaded view with()");
-				$rel_model = ORM::factory($rel['model']);
-				
-				if ($rel['type'] == 'belongs_to') {
-					$this->query->join(array($rel_model->table, $alias), array(
-						$model_alias.'.'.$rel['key'],
-						$alias.'.'.$rel_model->id_field,
-					),'left');
-				}else {
-					$this->query->join(array($rel_model->table, $alias), array(
-						$model_alias.'.'.$model->id_field,
-						$alias.'.'.$rel['key'],
-					), 'left');
-				}
-				
-				foreach($rel_model->columns() as $column)
-					$fields[]=array("{$alias}.{$column}","{$alias}__{$column}");
-				$model = $rel_model;
-				$model_alias = $alias;
-				$paths[$path] = array('alias' => $alias, 'model' => $model);
 			}
+			
+			call_user_func_array(array($this->query, 'fields'), $fields);
 		}
-		
-		call_user_func_array(array($this->query,'fields'),$fields);
 		return new ORMResult(get_class($this), $res=$this->query->execute(),$paths);
 	}
 
@@ -347,7 +349,6 @@ class ORM {
 			return $val;
 		}
 		$relations = array_merge($this->has_one, $this->has_many, $this->belongs_to);
-		
 		if ($target = Misc::arr($relations, $column, false)) {
 			$model = ORM::factory($target['model']);
 			$model->query = clone $this->query;
@@ -380,7 +381,7 @@ class ORM {
 					), 'inner');
 				}
 			}
-			$model->query->fields(array("$new_alias.*"));
+			$model->query->fields("$new_alias.*");
 			if ($target['type'] != 'has_many' && $this->loaded() ) {
 				$model = $model->find();
 				$this->cached[$column]=$model;

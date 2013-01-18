@@ -42,12 +42,15 @@ class DB_Mysql_Driver extends DB{
      * 
 	 * @param string $table Name of the table to get columns from
      * @return array Array of column names
+	 * @throw Exception if table doesn't exist
      * @access public 
      */
 	public function list_columns($table) {
 		$columns=array();
 		$table_desc = $this->execute("DESCRIBE `$table`");
-		
+		Debug::log($table_desc);
+		if (!$table_desc->valid())
+			throw new Exception("Table '{$table}' doesn't exist");
 		foreach($table_desc as $column)
 			$columns[] = $column->Field;
 			
@@ -105,9 +108,7 @@ class DB_Mysql_Driver extends DB{
 		}
 		$cursor->execute();
 		$res = $cursor->get_result();
-		if (is_object($res)){
-			$res=new Result_Mysql_Driver($res);
-		}
-		return $res;
+		return new Result_Mysql_Driver($res);
+
 	}
 }
