@@ -61,6 +61,13 @@ class DB_PDO_Driver extends DB{
 		return $this->conn->lastInsertId();
 	}
 	
+	/**
+     * Gets column names for the specified table
+     * 
+	 * @param string $table Name of the table to get columns from
+     * @return array Array of column names
+     * @access public 
+     */
 	public function list_columns($table) {
 		$columns=array();
 		if ($this->db_type == 'mysql') {
@@ -80,6 +87,7 @@ class DB_PDO_Driver extends DB{
 		}
 		return $columns;
 	}
+	
     /**
      * Executes a prepared statement query
      * 

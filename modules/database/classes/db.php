@@ -45,6 +45,13 @@ abstract class DB {
      */
 	public abstract function get_insert_id();
 	
+	/**
+     * Gets column names for the specified table
+     * 
+	 * @param string $table Name of the table to get columns from
+     * @return array Array of column names
+     * @access public 
+     */
 	public abstract function list_columns($table);
 
     /**

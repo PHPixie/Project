@@ -36,7 +36,24 @@ class DB_Mysql_Driver extends DB{
 			Config::get("database.{$config}.db")
 		);
 	}
-
+	
+	/**
+     * Gets column names for the specified table
+     * 
+	 * @param string $table Name of the table to get columns from
+     * @return array Array of column names
+     * @access public 
+     */
+	public function list_columns($table) {
+		$columns=array();
+		$table_desc = $this->execute("DESCRIBE `$table`");
+		
+		foreach($table_desc as $column)
+			$columns[] = $column->Field;
+			
+		return $columns;
+	}
+	
     /**
      * Builds a new Query implementation
      * 
