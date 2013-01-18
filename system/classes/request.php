@@ -108,7 +108,7 @@ class Request {
 		$request->_get = $_GET;
 		$uri = $_SERVER['REQUEST_URI'];
 		$basepath=Config::get('core.basepath','/');
-		$uri = preg_replace("#^{$basepath}index\.php#i", '', $uri);
+		$uri = preg_replace("#^{$basepath}(?:index\.php/)?#i", '/', $uri);
 		$url_parts = parse_url($uri);
 		$request->route = Route::match($url_parts['path']);
 		$request->method=$_SERVER['REQUEST_METHOD']; 
