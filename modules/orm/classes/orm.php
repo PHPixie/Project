@@ -572,7 +572,7 @@ class ORM {
      * @access public 
      */
 	public function save() {
-		if (isset($this->_row[$this->id_field])) {
+		if ($this->loaded()) {
 			$query = DB::instance($this->connection)->query('update')
 				->table($this->table)
 				->where($this->id_field,$this->_row[$this->id_field]);
@@ -583,7 +583,7 @@ class ORM {
 		$query->data($this->_row);
 		$query->execute();
 		
-		if (isset($this->_row[$this->id_field])) {
+		if ($this->loaded()) {
 			$id=$this->_row[$this->id_field];
 		}else {
 			$id=DB::instance($this->connection)->get_insert_id();
