@@ -243,7 +243,7 @@ abstract class Query_Database {
 	public function having() {
 		$p = func_get_args();
 		$cond = $this->get_condition_part($p);
-		$this->_having = array_merge($this->_having,$cond);
+		$this->_having = array_merge($this->_having,array($cond));
 		return $this;
 	}
 
@@ -304,7 +304,7 @@ abstract class Query_Database {
 	public function where() {
 		$p = func_get_args();
 		$cond = $this->get_condition_part($p);
-		$this->_conditions= array_merge($this->_conditions,$cond);
+		$this->_conditions= array_merge($this->_conditions,array($cond));
 		
 		return $this;
 	}
