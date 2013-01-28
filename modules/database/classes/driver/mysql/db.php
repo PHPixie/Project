@@ -35,6 +35,7 @@ class DB_Mysql_Driver extends DB{
 			Config::get("database.{$config}.password",''),
 			Config::get("database.{$config}.db")
 		);
+		$this->conn->set_charset("utf8");
 	}
 	
 	/**

@@ -11,7 +11,7 @@ class View{
      * @var string 
      * @access private  
      */
-	private $path;
+	protected $path;
 
     /**
      * The name of the view.
@@ -23,10 +23,35 @@ class View{
     /**
      * Stores all the variables passed to the view
      * @var array   
-     * @access private 
+     * @access protected 
      */
-	private $_data = array();
+	protected $_data = array();
 
+	/**
+     * File extension of the templates
+     * @var string   
+     * @access protected 
+     */
+	protected $_extension = 'php';
+	
+	/**
+     * Constructs the view
+     * 
+     * @param string   $name The name of the template to use
+     * @return View    
+     * @throws Exception If specified template is not found
+	 * @access protected    
+     */
+	protected function __construct($name){
+		$this->name = $name;
+		$file = Misc::find_file('views', $name,$this->_extension);
+		
+		if ($file == false)
+			throw new Exception("View {$name} not found.");
+			
+		$this->path=$file;
+	}
+	
     /**
      * Manages storing the data passed to the view as properties
      * 
@@ -50,7 +75,7 @@ class View{
 	public function __get($key){
 		if (isset($this->_data[$key]))
 			return $this->_data[$key];
-		throw new Exception("Value {$key} not set for view {$name}"); 
+		throw new Exception("Value {$key} not set for view {$this->name}"); 
 	}
 
     /**
@@ -76,23 +101,16 @@ class View{
 	}
 
     /**
-     * Constructs the view
-     * 
+     * Shorthand for constructing a view.
+	 *
      * @param string   $name The name of the template to use
      * @return View    
-     * @access public    
      * @throws Exception If specified template is not found
      * @static 
+	 * @access public    
      */
 	public static function get($name){
-		$view = new View();
-		$view->name = $name;
-		$file = Misc::find_file('views', $name);
-		
-		if ($file == false)
-			throw new Exception("View {$name} not found.");
-			
-		$view->path=$file;
-		return $view;
+		$class = get_called_class();
+		return new $class($name);
 	}
 }
