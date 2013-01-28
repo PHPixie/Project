@@ -1,8 +1,4 @@
 email/*
 migrate/*
-<<<<<<< HEAD
-validate/*
-=======
 validate/*
 haml/*
->>>>>>> Setting utf8 charset for mysqli. Adapted Views to be more extendable.
