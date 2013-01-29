@@ -3,7 +3,7 @@ RewriteBase /
 RewriteCond %{DOCUMENT_ROOT}/web/%{REQUEST_URI} -f
 RewriteRule ^(.*)$ /web/$1 [L,QSA]
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule .* index.php/$0 [PT,L,QSA]
+RewriteRule .* index.php?$0 [PT,L,QSA]
 
 
 
