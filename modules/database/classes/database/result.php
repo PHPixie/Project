@@ -81,12 +81,25 @@ abstract class Result_Database implements Iterator {
 		return $arr;
 	}
 	
-	public function check_fetched() {
+	/**
+     * Checks if the rows from the result set have
+	 * been fetched at least once. If not fetches first row.
+     * 
+     * @access public 
+     */
+	protected function check_fetched() {
 		if (!$this->_fetched)
 			$this->next();
 		$this->_fetched=true;
 	}
 	
+	/**
+     * Gets a column from the current row in the set
+     * 
+	 * @param  string $column Column name
+     * @return mixed  Column value
+     * @access public 
+     */
 	public function get($column) {
 		if ($this->valid() && isset($this->_row->$column))
 			return $this->_row->$column;
