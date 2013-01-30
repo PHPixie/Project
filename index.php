@@ -3,7 +3,7 @@
 /**
  * Working directory
  */
-define('ROOTDIR',dirname(__FILE__));
+define('ROOTDIR',dirname(__FILE__).'/');
 
 /**
  * Bootstrap the system

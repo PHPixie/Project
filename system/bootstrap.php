@@ -38,22 +38,22 @@ class Bootstrap{
 		/**
 		 * Application folder
 		 */
-			define('APPDIR', ROOTDIR.'/application/');
+			define('APPDIR', ROOTDIR.'application/');
 
 		/**
 		 * Modules folder
 		 */
-			define('MODDIR', ROOTDIR.'/modules/');
+			define('MODDIR', ROOTDIR.'modules/');
 
 		/**
 		 * System folder
 		 */
-			define('SYSDIR', ROOTDIR.'/system/');
+			define('SYSDIR', ROOTDIR.'system/');
 
 		/**
 		 * Web folder
 		 */
-			define('WEBDIR', ROOTDIR.'/web/');
+			define('WEBDIR', ROOTDIR.'web/');
 		/**
 		 * Helper functions
 		 */
@@ -67,6 +67,9 @@ class Bootstrap{
 		Config::load_group('core', 'application/config/core.php');
 		spl_autoload_register('Bootstrap::autoload');
 		Debug::init();
+		if(Config::get('core.composer',false))
+			include	ROOTDIR.'vendor/autoload.php';
+
 		foreach(Config::get('core.routes') as $route)
 			Route::add($route[0],$route[1],$route[2]);
 	}
