@@ -34,7 +34,9 @@ class DB_PDO_Driver extends DB{
 			Config::get("database.{$config}.user",''),
 			Config::get("database.{$config}.password",'')
 		);
-		$this->db_type=strtolower(str_replace('PDO_', '', $this->conn->getAttribute(PDO::ATTR_DRIVER_NAME)));
+		$this->db_type = strtolower(str_replace('PDO_', '', $this->conn->getAttribute(PDO::ATTR_DRIVER_NAME)));
+		if($this->db_type!='sqlite')
+			$this->execute("SET NAMES utf8");
 	}
 
     /**
