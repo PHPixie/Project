@@ -58,13 +58,13 @@ class Query_PDO_Driver extends Query_Database {
      */
 	public function escape_field($field) {
 		if (is_object($field) && get_class($field) == 'Expression_Database')
-			return $field->value.' ';
+			return $field->value;
 		$field = explode('.', $field);
 		if (count($field) == 1)
 			array_unshift($field,$this->last_alias());
 		$str = $this->quote($field[0]).'.';
 		if (trim($field[1]) == '*')
-			return $str.'* ';
+			return $str.'*';
 		return $str.$this->quote($field[1]);
 	}
 	
@@ -79,9 +79,9 @@ class Query_PDO_Driver extends Query_Database {
      */
 	public function escape_value($val,&$params) {
 		if (is_object($val) && get_class($val) == 'Expression_Database')
-			return $val->value.' ';
+			return $val->value;
 		$params[] = $val;
-		return '? ';
+		return '?';
 	}
 	
     /**
@@ -104,12 +104,12 @@ class Query_PDO_Driver extends Query_Database {
 				$first = true;
 				foreach($this->_data as $key => $val) {
 					if (!$first) {
-						$values.= ',';
-						$columns.= ',';
+						$values.= ', ';
+						$columns.= ', ';
 					}else {
 						$first=false;
 					}
-					$columns.= $this->quote($key)." ";
+					$columns.= $this->quote($key);
 					$values.=$this->escape_value($val,$params);
 				}
 				$query.= "({$columns}) VALUES({$values})";
@@ -146,12 +146,13 @@ class Query_PDO_Driver extends Query_Database {
 				$first = true;
 				foreach($this->_data as $key=>$val){
 					if (!$first) {
-						$query.=',';
+						$query.=", ";
 					}else {
 						$first=false;
 					}
-					$query.= "{$this->quote($key)}=".$this->escape_value($val,$params);
+					$query.= "{$this->quote($key)} = {$this->escape_value($val,$params)}";
 				}
+				$query.= " ";
 			}
 			
 			foreach($this->_joins as $join) {
@@ -161,17 +162,17 @@ class Query_PDO_Driver extends Query_Database {
 				}else {
 					$table="{$this->quote($table)}";
 				}
-				$query.= strtoupper($join[1])." JOIN {$table} ON ".$this->get_condition_query($join[2],$params,true,true);
+				$query.= strtoupper($join[1])." JOIN {$table} ON {$this->get_condition_query($join[2],$params,true,true)} ";
 			}
 
 			if (!empty($this->_conditions)) {
-				$query.="WHERE ".$this->get_condition_query($this->_conditions,$params,true);
+				$query.="WHERE {$this->get_condition_query($this->_conditions,$params,true)} ";
 			}
 			if (($this->_type == 'select' ||  $this->_type == 'count') && $this->_group_by!=null) {
-				$query.="GROUP BY ".$this->escape_field($this->_group_by);
+				$query.="GROUP BY {$this->escape_field($this->_group_by)} ";
 			}
 			if (($this->_type == 'select' ||  $this->_type == 'count') && !empty($this->_having)) {
-				$query.="HAVING ".$this->get_condition_query($this->_having,$params,true);
+				$query.="HAVING {$this->get_condition_query($this->_having,$params,true)} ";
 			}
 			
 			if ($this->_type == 'select' && !empty($this->_orderby)) {
@@ -223,21 +224,21 @@ class Query_PDO_Driver extends Query_Database {
 			}else {
 				$param = $this->escape_value($p['value'],$params);
 			}
-			return $this->escape_field($p['field']).' '.$p['operator'].' '.$param.' ';
+			return $this->escape_field($p['field']).' '.$p['operator'].' '.$param;
 		}
 		if (isset($p['logic'])) {
-			return ($skip_first_operator?'':strtoupper($p['logic'])).' '
-					.$this->get_condition_query($p['conditions'],$params,false,$value_is_field).' ';
+			return ($skip_first_operator?'':strtoupper($p['logic']).' ')
+					.$this->get_condition_query($p['conditions'],$params,false,$value_is_field);
 		}
 		
 		$conds = '';
 		$skip=$skip_first_operator||(count($p) > 1);
 		foreach($p as $q) {
-			$conds.=$this->get_condition_query($q,$params,$skip,$value_is_field);
+			$conds.=$this->get_condition_query($q,$params,$skip,$value_is_field).' ';
 			$skip=false;
 		}
 		if (count($p) > 1 && !$skip_first_operator)
-			return "( ".$conds." ) ";
+			return "( ".$conds.")";
 		return $conds;
 
 		throw new Exception("Cannot parse condition:\n".var_export($p,true));

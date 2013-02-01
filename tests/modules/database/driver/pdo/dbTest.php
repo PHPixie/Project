@@ -19,12 +19,19 @@ class DB_PDO_DriverTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-		$db = new PDO('sqlite:php://temp/test.sqlite');
+		file_put_contents(dirname(__FILE__).'/../../files/test.sqlite','');
+		$db = new PDO('sqlite:'.dirname(__FILE__).'/../../files/test.sqlite');
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$db->exec("CREATE TABLE fairies(id INT PRIMARY_KEY AUTOINCREMENT,name VARCHAR(255))");
+		$db->exec("CREATE TABLE fairies(id INT PRIMARY_KEY,name VARCHAR(255))");
 		
-		Config::set('database.default.connection', 'sqlite:php://temp/test.sqlite');
-		Config::set('database.default.driver','pdo');
+		Misc::$file = dirname(__FILE__).'/../../files/config.sqlite';
+		file_put_contents(Misc::$file, "<?php return ".var_export(array(
+			'default' => array(
+				'connection' => 'sqlite:'.dirname(__FILE__).'/../../files/test.sqlite',
+				'driver'=>'pdo'
+			)
+		), true).';');
+		
         $this->object = new DB_PDO_Driver('default');
     }
 
@@ -34,6 +41,7 @@ class DB_PDO_DriverTest extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
+
     }
 
     /**
@@ -42,7 +50,7 @@ class DB_PDO_DriverTest extends PHPUnit_Framework_TestCase
      */
     public function testBuild_query()
     {
-        $this->build_query('select');
+        $this->object->build_query('select');
     }
 
     /**
@@ -52,7 +60,7 @@ class DB_PDO_DriverTest extends PHPUnit_Framework_TestCase
     public function testGet_insert_id()
     {
         $this->object->execute("INSERT INTO fairies(name)values('Trixie')");
-		$this->assertEquals(1,$this->get_insert_id());
+		$this->assertEquals(1,$this->object->get_insert_id());
     }
 
     /**
@@ -61,7 +69,7 @@ class DB_PDO_DriverTest extends PHPUnit_Framework_TestCase
      */
     public function testList_columns()
     {
-        $cols = $this->list_columns('fairies');
+        $cols = $this->object->list_columns('fairies');
 		$this->assertContains('id',$cols);
 		$this->assertContains('name',$cols);
     }
@@ -72,7 +80,7 @@ class DB_PDO_DriverTest extends PHPUnit_Framework_TestCase
      */
     public function testExecute()
     {
-        $this->execute("SELECT * FROM fairies where id = ?",array(1));
+        $this->object->execute("SELECT * FROM fairies where id = ?",array(1));
     }
 	
 	/**
@@ -83,7 +91,7 @@ class DB_PDO_DriverTest extends PHPUnit_Framework_TestCase
     {
 		$except = false;
 		try{
-			$this->execute("SELECUT * FROM fairies where id = ?", array(1));
+			$this->object->execute("SELECUT * FROM fairies where id = ?", array(1));
 		}catch (Exception $e) {
 			$except=true;
 		}
@@ -96,7 +104,7 @@ class DB_PDO_DriverTest extends PHPUnit_Framework_TestCase
      */
     public function testNamed_query()
     {
-		 $this->execute("SELECT * FROM fairies where id = :id",array(array('id'=>1)));
+		 $this->object->named_query("SELECT * FROM fairies where id = :id",array(array('id'=>1)));
     }
 	
 	/**
@@ -107,7 +115,7 @@ class DB_PDO_DriverTest extends PHPUnit_Framework_TestCase
     {
 		$except = false;
 		try{
-			 $this->execute("SELsECT * FROM fairies where id = :id",array(array('id'=>1)));
+			 $this->object->named_query("SELsECT * FROM fairies where id = :id",array(array('id'=>1)));
 		}catch (Exception $e) {
 			$except=true;
 		}
