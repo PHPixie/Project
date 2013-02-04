@@ -16,8 +16,6 @@ class Result_Mysql_Driver extends Result_Database {
      */
 	public function __construct($result) {
 		$this->_result = $result;
-		if(!empty($result))
-			$this->_row=$this->_result->fetch_object();
 	}
 
     /**
@@ -39,11 +37,11 @@ class Result_Mysql_Driver extends Result_Database {
      * @access public 
      */
     public function next() {
-
-        $this->_position++;
+		if($this->_fetched)
+			$this->_position++;
 		$this->_row=$this->_result->fetch_object();
 		if ($this->_row == null)
-				$this->_result->free();
+			$this->_result->free();
     }
     	
 }
