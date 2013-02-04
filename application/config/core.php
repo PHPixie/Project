@@ -8,5 +8,5 @@ return array(
 			)
 		)
 	),
-	'modules' => array('database', 'orm')
+	'modules' => array('database', 'orm','cache')
 );

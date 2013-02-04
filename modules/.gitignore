@@ -2,3 +2,4 @@ email/*
 migrate/*
 validate/*
 haml/*
+cache/*

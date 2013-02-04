@@ -16,7 +16,6 @@ class Result_PDO_Driver extends Result_Database {
      */
 	public function __construct($stmt) {
 		$this->_result = $stmt;
-		$this->_row=$this->_result->fetchObject();
 	}
 
     /**
@@ -38,11 +37,11 @@ class Result_PDO_Driver extends Result_Database {
      * @access public 
      */
     public function next() {
-
-        $this->_position++;
+		if($this->_fetched)
+			$this->_position++;
 		$this->_row=$this->_result->fetchObject();
 		if ($this->_row == false)
-				$this->_result->closeCursor();
+			$this->_result->closeCursor();
     }
     	
 }

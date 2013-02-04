@@ -28,6 +28,12 @@ abstract class Result_Database implements Iterator {
      */
     protected $_row;
 	
+	/**
+     * If at least one row has been fetched
+     * @var object   
+     * @access protected 
+     */
+	protected $_fetched = false;
 	
     /**
      * Returns current row
@@ -36,6 +42,7 @@ abstract class Result_Database implements Iterator {
      * @access public  
      */
     public function current() {
+		$this->check_fetched();
         return $this->_row;
     }
 
@@ -46,6 +53,7 @@ abstract class Result_Database implements Iterator {
      * @access public  
      */
     public function key() {
+		$this->check_fetched();
         return $this->_position;
     }
 
@@ -56,6 +64,7 @@ abstract class Result_Database implements Iterator {
      * @access public  
      */
     public function valid() {
+		$this->check_fetched();
 		return $this->_row!=null;
     }
 
@@ -70,6 +79,17 @@ abstract class Result_Database implements Iterator {
 		foreach($this as $row)
 			$arr[] = $row;
 		return $arr;
+	}
+	
+	public function check_fetched() {
+		if (!$this->_fetched)
+			$this->next();
+		$this->_fetched=true;
+	}
+	
+	public function get($column) {
+		if ($this->valid() && isset($this->_row->$column))
+			return $this->_row->$column;
 	}
 	
 }
