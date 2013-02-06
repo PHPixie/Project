@@ -131,29 +131,18 @@ class Request {
 	}
 
     /**
-     * Initializes the Request and process the URI into a Route
+     * Creates a Request representing current HTTP request.
      * 
      * @return Request Request 
      * @access public 
      * @static 
      */
 	public static function create() {
-		return new Request(Route::match(static::getURI()), $_SERVER['REQUEST_METHOD'], $_POST, $_GET, $_SERVER);
-	}
-	
-	/**
-     * Gets URI of the current HTTP Request
-     * 
-     * @return string URI of the HTTP Request
-     * @access public 
-     * @static 
-     */
-	public static function getURI() {
 		$uri = $_SERVER['REQUEST_URI'];
 		$basepath=Config::get('core.basepath','/');
 		$uri = preg_replace("#^{$basepath}(?:index\.php/)?#i", '/', $uri);
 		$url_parts = parse_url($uri);
-		return $url_parts['path'];
+		return new Request(Route::match($url_parts['path']), $_SERVER['REQUEST_METHOD'], $_POST, $_GET, $_SERVER);
 	}
 
 }
