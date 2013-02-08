@@ -145,12 +145,43 @@ class Result_ORM implements Iterator {
      * @access public  
      */
 	public function as_array($rows = false) {
-		if ($rows)
+		if (!$rows) {
+			$arr = array();
+			foreach($this as $row)
+				$arr[] = $row;
+			return $arr;
+		}
+		
+		if (empty($this->_with))
 			return $this->_dbresult->as_array();
+			
 		$arr = array();
-		foreach($this as $row)
-			$arr[] = $row;
+		$model=new $this->_model;
+		foreach($this->_dbresult as $data) {
+			$row = new stdClass;
+			$data=(array)$data;
+			foreach($model->columns() as $column)
+				$row->$column = array_shift($data);
+				
+			foreach($this->_with as $rel) {
+				$rel_data = new StdClass;
+				foreach($rel['columns'] as $column)
+					$rel_data->$column = array_shift($data);
+							
+				$owner = &$row;
+				foreach($rel['path'] as $key => $child) {
+					if ($key == $rel['path_count'] - 1) {
+						$owner->$child=$rel_data;
+					}else {
+						$owner=&$owner->$child;
+					}
+				}
+			}
+			$arr[]=$row;
+		}
+		
 		return $arr;
+		
 	}
 	
 }
