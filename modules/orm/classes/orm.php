@@ -198,7 +198,7 @@ class ORM {
     /**
      * Finds all rows that meet set criteria.
      * 
-     * @return ORMResult Returns ORMResult that you can use in a 'foreach' loop.
+     * @return Result_ORM Returns Result_ORM that you can use in a 'foreach' loop.
 	 * @throw  Exception If the relationship specified using with() does not exist or is not of the belongs_to or has_one type
      * @access public 
      */
@@ -252,7 +252,7 @@ class ORM {
 			
 			call_user_func_array(array($this->query, 'fields'), $fields);
 		}
-		return new ORMResult(get_class($this), $res=$this->query->execute(),$paths);
+		return new Result_ORM(get_class($this), $res=$this->query->execute(),$paths);
 	}
 
     /**
