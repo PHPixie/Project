@@ -1,16 +1,9 @@
 <?php
-class Test_ORM {
-	public $row;
-	public $loaded;
-	
-	public $cached = array();
-	
-	public function values($row,$loaded){
-		$this->row=$row;
-		$this->loaded = $loaded;
-		return $this;
-	}
-	public function columns(){
-		return array('id','name');
-	}
+class Test_ORM extends ORM {
+	public $belongs_to=array('test');
+	public $has_one=array('btest'=>array('model'=>'test'));
+	public $has_many = array(
+		'tests'=>array('model'=>'test','key'=>'has_key'),
+		'teststhrough'=>array('model'=>'test','through'=>'test_through')
+	);
 }

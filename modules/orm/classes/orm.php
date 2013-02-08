@@ -12,7 +12,7 @@
  *               If NULL is passed than no limit is used.
  *               Without arguments returns current offset, returns self otherwise.
  *
- * @method mixed orderby(string $column, string $dir) Adds a column to ordering parameters
+ * @method mixed order_by(string $column, string $dir) Adds a column to ordering parameters
  *
  * @method mixed where(mixed $key, mixed $operator = null, mixed $val = null) behaves just like Query_Database::where()
  *
