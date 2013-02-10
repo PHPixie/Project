@@ -1,0 +1,7 @@
+<?php return array (
+  'default' => 
+  array (
+    'connection' => 'sqlite:C:\\Users\\Dracony\\Documents\\GitHub\\PHPixie\\tests\\modules\\database\\driver\\pdo/../../files/test.sqlite',
+    'driver' => 'pdo',
+  ),
+);

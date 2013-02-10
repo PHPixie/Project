@@ -12,7 +12,7 @@ abstract class Result_Database implements Iterator {
      * @var integer   
      * @access protected 
      */
-    protected $_position = 0;
+    protected $_position = -1;
 
     /**
      * Database result object
@@ -88,9 +88,10 @@ abstract class Result_Database implements Iterator {
      * @access public 
      */
 	protected function check_fetched() {
-		if (!$this->_fetched)
+		if (!$this->_fetched) {
+			$this->_fetched=true;
 			$this->next();
-		$this->_fetched=true;
+		}
 	}
 	
 	/**
