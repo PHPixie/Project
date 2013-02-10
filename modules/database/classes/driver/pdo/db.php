@@ -37,7 +37,7 @@ class DB_PDO_Driver extends DB{
 		$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->db_type = strtolower(str_replace('PDO_', '', $this->conn->getAttribute(PDO::ATTR_DRIVER_NAME)));
 		if($this->db_type!='sqlite')
-			$this->execute("SET NAMES utf8");
+			$this->conn->exec("SET NAMES utf8");
 	}
 
     /**

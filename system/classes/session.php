@@ -7,14 +7,6 @@
 class Session{
 
     /**
-     * Flag to check if the session was already intialized
-     * @var boolean 
-     * @access private  
-     * @static 
-     */
-	private static $initialized=false;
-
-    /**
      * Makes sure the session is initialized
      * 
      * @return void   
@@ -22,9 +14,8 @@ class Session{
      * @static 
      */
 	private static function check(){
-		if(!Session::$initialized){
+		if(!session_id()){
 			session_start();
-			Session::$initialized=true;
 		}
 	}
 

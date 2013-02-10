@@ -26,7 +26,7 @@ class Result_PDO_Driver extends Result_Database {
      * @throws Exception If rewind is attempted
      */
     public function rewind() {
-		if($this->_position!=0)
+		if($this->_position>0)
 			throw new Exception('PDO statement cannot be rewound for unbuffered queries');
     }
 		
@@ -37,11 +37,13 @@ class Result_PDO_Driver extends Result_Database {
      * @access public 
      */
     public function next() {
-		if($this->_fetched)
+		$this->check_fetched();
+		$this->_row = $this->_result->fetchObject();
+		if ($this->_row) {
 			$this->_position++;
-		$this->_row=$this->_result->fetchObject();
-		if ($this->_row == false)
+		}else {
 			$this->_result->closeCursor();
+		}
     }
     	
 }

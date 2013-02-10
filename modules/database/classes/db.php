@@ -66,7 +66,7 @@ abstract class DB {
      * @return Result_Database   Current drivers implementation of Result_Database
      * @access public  
      */
-	public function namedQuery($query, $params=array()) {
+	public function named_query($query, $params=array()) {
 		$bind = array();
 		preg_match_all('#:(\w+)#is', $query, $matches,PREG_SET_ORDER);
 		foreach($matches as $match)
