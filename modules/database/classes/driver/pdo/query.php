@@ -139,8 +139,15 @@ class Query_PDO_Driver extends Query_Database {
 			if ($this->_type == 'count') {
 				$query.= "SELECT COUNT(*) as {$this->quote('count')} FROM {$this->quote($this->_table)} ";	
 			}
-			if($this->_type=='delete')
-				$query.= "DELETE {$this->last_alias()}.* FROM {$this->quote($this->_table)} ";
+			if ($this->_type == 'delete') {
+				if($this->_db_type!='sqlite'){
+					$query.= "DELETE {$this->last_alias()}.* FROM {$this->quote($this->_table)} ";
+				}else {
+					if (!empty($this->_joins))
+						throw new Exception("SQLite doesn't support deleting a table with JOIN in the query");
+					$query.= "DELETE FROM {$this->quote($this->_table)} ";
+				}
+			}
 			if($this->_type=='update'){
 				$query.= "UPDATE {$this->quote($this->_table)} SET ";
 				$first = true;
