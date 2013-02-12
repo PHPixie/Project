@@ -173,7 +173,8 @@ class ORMTest extends PHPUnit_Framework_TestCase
     public function testAdd()
     {
         $fairy = ORM::factory('fairy')->find();
-		$fairy->add('tree',ORM::factory('tree')->where('id', 2)->find());
+		$fairy->add('tree', ORM::factory('tree')->where('id', 2)->find());
+		$fairy->save();
 		$this->assertEquals('Willow', ORM::factory('fairy')->find()->tree-> name);
 		
 		$fairy = ORM::factory('fairy')->find();
@@ -193,7 +194,12 @@ class ORMTest extends PHPUnit_Framework_TestCase
 		
 		$fairy = ORM::factory('fairy')->find();
 		$fairy->friends = ORM::factory('fairy')->where('id', 1)->find();
-		$this->assertEquals('Tinkerbell',ORM::factory('fairy')->find()->friends->find()->name);
+		$this->assertEquals('Tinkerbell', ORM::factory('fairy')->find()->friends->find()->name);
+		
+		ORM::factory('tree')->where('id',2)->find()->fairy = ORM::factory('fairy')->find();
+		ORM::factory('tree')->find()->fairy = ORM::factory('fairy')->where('id', 2)->find();
+		
+		$this->assertEquals('Trixie', ORM::factory('tree')->find()->fairy->name);
     }
 
     

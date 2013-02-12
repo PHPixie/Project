@@ -427,21 +427,27 @@ class ORM {
      */
 	public function add($relation, $model) {
 	
-		if (!$this->loaded())
-			throw new Exception("Model must be loaded before you try adding relationships to it. Probably you haven't saved it.");
-		if (!$model->loaded())
-			throw new Exception("Model must be loaded before added to a relationship. Probably you haven't saved it.");
-			
 		$rels = array_merge($this->has_one, $this->has_many,$this->belongs_to);
 		$rel = Misc::arr($rels, $relation, false);
 		if (!$rel)
 			throw new Exception("Model doesn't have a '{$relation}' relation defined");
 		
-		if ($rel['type']=='belongs_to') {
+		if ($rel['type'] == 'belongs_to') {
+		
+			if (!$model->loaded())
+				throw new Exception("Model must be loaded before added to a belongs_to relationship. Probably you haven't saved it.");
+				
 			$key=$rel['key'];
 			$this->$key = $model->_row[$this->id_field];
-			$this->save();
+			if ($this->loaded())
+				$this->save();
 		}elseif (isset($rel['through'])) {
+		
+			if (!$this->loaded())
+				throw new Exception("Model must be loaded before you try adding 'through' relationships to it. Probably you haven't saved it.");
+			if (!$model->loaded())
+				throw new Exception("Model must be loaded before added to a 'through' relationship. Probably you haven't saved it.");
+				
 			$exists = DB::instance($this->connection)->build_query('count')
 				->table($rel['through'])
 				->where(array(
@@ -458,9 +464,14 @@ class ORM {
 					))
 					->execute();
 		}else {
+			
+			if (!$this->loaded())
+				throw new Exception("Model must be loaded before you try adding 'has_many' relationships to it. Probably you haven't saved it.");
+				
 			$key=$rel['key'];
 			$model->$key = $this->_row[$this->id_field];
-			$model->save();
+			if($model->loaded())
+				$model->save();
 		}
 		$this->cached=array();
 	}
