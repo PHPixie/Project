@@ -625,9 +625,10 @@ class ORM {
 	public static function factory($name,$id=null){
 		$model = $name.'_Model'; 
 		$model=new $model;
-		if ($id != null)
-			return $model->where($model->id_field, $id)->find()
-				->data(array($model->id_field,$id));
+		if ($id != null){
+			$model=$model->where($model->id_field, $id)->find();
+			$model->values(array($model->id_field, $id));
+		}
 		return $model;
 	}
 
