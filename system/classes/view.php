@@ -95,9 +95,7 @@ class View{
 		extract($this->_data);
 		ob_start();
 		include($this->path);
-		$out = ob_get_contents();
-		ob_end_clean();
-		return $out;
+		return ob_get_clean();
 	}
 
     /**
