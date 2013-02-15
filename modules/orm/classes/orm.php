@@ -12,7 +12,7 @@
  *               If NULL is passed than no limit is used.
  *               Without arguments returns current offset, returns self otherwise.
  *
- * @method mixed orderby(string $column, string $dir) Adds a column to ordering parameters
+ * @method mixed order_by(string $column, string $dir) Adds a column to ordering parameters
  *
  * @method mixed where(mixed $key, mixed $operator = null, mixed $val = null) behaves just like Query_Database::where()
  *
@@ -140,7 +140,7 @@ class ORM {
 	 * @ see $db
      */
 	public function __construct() {
-		$this->query = DB::instance($this->connection)->query('select');
+		$this->query = DB::instance($this->connection)->build_query('select');
 		$this->model_name = strtolower(get_class($this));
 		if (substr($this->model_name, -6) == '_model') 
 			$this->model_name=substr($this->model_name,0,-6);
@@ -187,7 +187,7 @@ class ORM {
      * @access public  
      */
 	public function __call($method, $arguments) {
-		if (!in_array($method, array('limit', 'offset', 'orderby', 'where')))
+		if (!in_array($method, array('limit', 'offset', 'order_by', 'where')))
 			throw new Exception("Method '{$method}' doesn't exist on .".get_class($this));
 		$res = call_user_func_array(array($this->query, $method), $arguments);
 		if(is_subclass_of($res,'Query_Database'))
@@ -198,7 +198,7 @@ class ORM {
     /**
      * Finds all rows that meet set criteria.
      * 
-     * @return ORMResult Returns ORMResult that you can use in a 'foreach' loop.
+     * @return Result_ORM Returns Result_ORM that you can use in a 'foreach' loop.
 	 * @throw  Exception If the relationship specified using with() does not exist or is not of the belongs_to or has_one type
      * @access public 
      */
@@ -252,7 +252,8 @@ class ORM {
 			
 			call_user_func_array(array($this->query, 'fields'), $fields);
 		}
-		return new ORMResult(get_class($this), $res=$this->query->execute(),$paths);
+
+		return new Result_ORM(get_class($this), $res=$this->query->execute(),$paths);
 	}
 
     /**
@@ -426,22 +427,28 @@ class ORM {
      */
 	public function add($relation, $model) {
 	
-		if (!$this->loaded())
-			throw new Exception("Model must be loaded before you try adding relationships to it. Probably you haven't saved it.");
-		if (!$model->loaded())
-			throw new Exception("Model must be loaded before added to a relationship. Probably you haven't saved it.");
-			
 		$rels = array_merge($this->has_one, $this->has_many,$this->belongs_to);
 		$rel = Misc::arr($rels, $relation, false);
 		if (!$rel)
 			throw new Exception("Model doesn't have a '{$relation}' relation defined");
 		
-		if ($rel['type']=='belongs_to') {
+		if ($rel['type'] == 'belongs_to') {
+		
+			if (!$model->loaded())
+				throw new Exception("Model must be loaded before added to a belongs_to relationship. Probably you haven't saved it.");
+				
 			$key=$rel['key'];
 			$this->$key = $model->_row[$this->id_field];
-			$this->save();
+			if ($this->loaded())
+				$this->save();
 		}elseif (isset($rel['through'])) {
-			$exists = DB::instance($this->connection)->query('count')
+		
+			if (!$this->loaded())
+				throw new Exception("Model must be loaded before you try adding 'through' relationships to it. Probably you haven't saved it.");
+			if (!$model->loaded())
+				throw new Exception("Model must be loaded before added to a 'through' relationship. Probably you haven't saved it.");
+				
+			$exists = DB::instance($this->connection)->build_query('count')
 				->table($rel['through'])
 				->where(array(
 					array($rel['key'],$this->_row[$this->id_field]),
@@ -449,7 +456,7 @@ class ORM {
 				))
 				->execute();
 			if(!$exists)
-				DB::instance($this->connection)->query('insert')
+				DB::instance($this->connection)->build_query('insert')
 					->table($rel['through'])
 					->data(array(
 						$rel['key'] => $this->_row[$this->id_field],
@@ -457,9 +464,14 @@ class ORM {
 					))
 					->execute();
 		}else {
+			
+			if (!$this->loaded())
+				throw new Exception("Model must be loaded before you try adding 'has_many' relationships to it. Probably you haven't saved it.");
+				
 			$key=$rel['key'];
 			$model->$key = $this->_row[$this->id_field];
-			$model->save();
+			if($model->loaded())
+				$model->save();
 		}
 		$this->cached=array();
 	}
@@ -475,7 +487,7 @@ class ORM {
      * @throws Exception Exception If current item is not in the database yet (isn't considered loaded())
      * @throws Exception Exception If passed item is not in the database yet (isn't considered loaded())
      */
-	public function remove($relation, $model=false) {
+	public function remove($relation, $model=null) {
 		
 		if (!$this->loaded())
 			throw new Exception("Model must be loaded before you try removing relationships from it.");
@@ -492,7 +504,7 @@ class ORM {
 			$this->$key = null;
 			$this->save();
 		}elseif (isset($rel['through'])) {
-			$exists = DB::instance($this->connection)->query('delete')
+			DB::instance($this->connection)->build_query('delete')
 				->table($rel['through'])
 				->where(array(
 					array($rel['key'],$this->_row[$this->id_field]),
@@ -543,7 +555,7 @@ class ORM {
 	public function delete() {
 		if (!$this->loaded())
 			throw new Exception("Cannot delete an item that wasn't selected from database");
-		DB::instance($this->connection)->query('delete')
+		DB::instance($this->connection)->build_query('delete')
 			->table($this->table)
 			->where($this->id_field, $this->_row[$this->id_field])
 			->execute();
@@ -573,11 +585,11 @@ class ORM {
      */
 	public function save() {
 		if ($this->loaded()) {
-			$query = DB::instance($this->connection)->query('update')
+			$query = DB::instance($this->connection)->build_query('update')
 				->table($this->table)
 				->where($this->id_field,$this->_row[$this->id_field]);
 		}else {
-			$query = DB::instance($this->connection)->query('insert')
+			$query = DB::instance($this->connection)->build_query('insert')
 				->table($this->table);
 		}
 		$query->data($this->_row);
@@ -588,7 +600,7 @@ class ORM {
 		}else {
 			$id=DB::instance($this->connection)->get_insert_id();
 		}
-		$row =(array) DB::instance($this->connection)->query('select')
+		$row =(array) DB::instance($this->connection)->build_query('select')
 			->table($this->table)
 			->where($this->id_field, $id)->execute()->current();
 		$this->values($row,true);

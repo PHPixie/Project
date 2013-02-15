@@ -214,7 +214,7 @@ abstract class Query_Database {
 		$query = $this->query();
 		$result = $this->_db->execute($query[0], $query[1]);
 		if ($this->_type == 'count')
-			return $result->current()->count;
+			return $result->get('count');
 		return $result;
 	}
 	
@@ -256,7 +256,7 @@ abstract class Query_Database {
 	 * @throws Exception If ordering direction isn't DESC or ASC
      * @access public  
      */
-	public function orderby($column, $dir) {
+	public function order_by($column, $dir) {
 		$dir=strtoupper($dir);
 		if ($dir != 'DESC' && $dir != 'ASC')
 			throw new Exception("Invalid sorting direction {$dir} specified");
