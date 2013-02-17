@@ -639,7 +639,7 @@ class ORM {
 		$model=new $model;
 		if ($id != null){
 			$model=$model->where($model->id_field, $id)->find();
-			$model->values(array($model->id_field, $id));
+			$model->values(array($model->id_field => $id));
 		}
 		return $model;
 	}
