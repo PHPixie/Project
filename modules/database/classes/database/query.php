@@ -190,7 +190,7 @@ abstract class Query_Database {
 			if (empty($args))
 				return $this->$property;
 			$val = $args[0];
-			if (is_int($val)) 
+			if (is_numeric($val)) 
 				$val = (int) $val;
 			$allowed_types = $this->methods[$method];
 			if (!is_array($allowed_types))
