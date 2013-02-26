@@ -113,11 +113,12 @@ class RoteTest extends PHPUnit_Framework_TestCase
      */
     public function testUrl()
     {
-        Route::add('url', '/<controller>/<action>(/<id>)', array(
+        Route::add('url', '(/<controller>(/<action>(/<id>)))', array(
 				'controller' => 'home',
 				'action' => 'index'
 			));
 		$route = Route::get('url');
-		$this->assertEquals('/home/index/5', $route->url(array('id'=>5)));
+		$this->assertEquals('/home/index/5', $route-> url(array('id' => 5)));
+		$this->assertEquals('/home/index', $route->url());
     }
 }

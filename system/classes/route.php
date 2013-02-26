@@ -80,12 +80,18 @@ class Route {
 			
 		$url = is_array($this->rule)?$this->rule[0]:$this->rule;
 		
-		$replace = array('(' => '', ')' => '');
+		$replace = array();
 		$params = array_merge($this->defaults, $params);
 		foreach($params as $key => $value)
 			$replace["<{$key}>"] = $value;
-			
 		$url = str_replace(array_keys($replace), array_values($replace), $url);
+		
+		$count = 1;
+		$chars='[^\(\)]*?';
+		while($count>0)
+			$url = preg_replace("#\({$chars}<{$chars}>{$chars}\)#", '', $url, -1, $count);
+			
+		$url = str_replace(array('(', ')'), '', $url);
 		
 		if ($absolute)
 			$url = $protocol.'://'.$_SERVER['HTTP_HOST'].$url;
