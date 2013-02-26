@@ -77,4 +77,15 @@ class sessionTest extends PHPUnit_Framework_TestCase
 		Session::reset(); 
 		$this->assertEquals(0, count($_SESSION));
     }
+	
+	/**
+     * @covers Session::flash
+     */
+    public function testFlash()
+    {
+		Session::flash('test', 'Trixie');
+		Session::flash('test', 'Tinkerbell');
+		$this->assertEquals('Tinkerbell', Session::flash('test'));
+		$this->assertEquals(null,Session::flash('test'));
+    }
 }

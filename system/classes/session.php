@@ -57,6 +57,10 @@ class Session{
      */
 	public static function remove($key) {
 		Session::check();
+		
+		if (!isset($_SESSION[$key]))
+			return;
+			
 		$var = $_SESSION[$key];
 		unset($_SESSION[$key], $var);
 	}
@@ -71,5 +75,29 @@ class Session{
 	public static function reset() {
 		Session::check();
 		$_SESSION=array();
+	}
+	
+	/**
+     * Gets ot sets flash messages. 
+	 * If the value parameter is passed the message is set, otherwise it is retrieved.
+	 * After the message is retrieved for the first time it is removed.
+     * 
+	 * @param $key  The name of the flash message
+	 * @param $val  Flash message content
+     * @return mixed    
+     * @access public  
+     * @static 
+     */
+	public static function flash($key,$val = null) {
+		Session::check();
+		$key="flash_{$key}";
+		if($val != null) {
+			Session::set($key,$val);
+		}else {
+			$val = Session::get($key);
+			Session::remove($key);
+		}
+		
+		return $val;
 	}
 }
