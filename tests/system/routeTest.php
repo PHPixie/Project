@@ -107,4 +107,17 @@ class RoteTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('test', $route-> params['alpha']);
 		$this->assertEquals(123,$route->params['num']);
     }
+	
+	/**
+     * @covers Route::url
+     */
+    public function testUrl()
+    {
+        Route::add('url', '/<controller>/<action>(/<id>)', array(
+				'controller' => 'home',
+				'action' => 'index'
+			));
+		$route = Route::get('url');
+		$this->assertEquals('/home/index/5', $route->url(array('id'=>5)));
+    }
 }

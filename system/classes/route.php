@@ -50,11 +50,30 @@ class Route {
      */
 	private static $routes = array();
 	
+	/**
+     * Constructs a route.
+     *
+     * @param string $name		Name of the route
+	 * @param mixed $rule		Rule for this route
+	 * @param array $defaults	Default parameters for the route
+	 * @return Route Initialized Route
+	 * @access protected
+     */
 	protected function __construct($name, $rule, $defaults) {
 		$this->name = $name;
 		$this->rule = $rule;
 		$this->defaults = $defaults;
 	}
+	
+	/**
+     * Generates a url for a route
+     *
+     * @param array $params    Parameters to substitute in the route
+	 * @param bool $absolute   Whether to return an absolute url
+	 * @param string $protocol	Protocol to use for absolute url
+	 * @return string Generated url
+	 * @access public
+     */
 	public function url($params = array(), $absolute = false, $protocol = 'http') {
 		if (is_callable($this->rule))
 			throw new Exception("The rule for '{$this->name}' route is a function and cannot be reversed");
