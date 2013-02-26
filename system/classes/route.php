@@ -12,7 +12,21 @@ class Route {
      * @access public  
      */
 	public $name;
-
+	
+	/**
+     * Rule for this route.
+     * @var mixed
+     * @access public  
+     */
+	public $rule;
+	
+	/**
+     * Default parameters for this route.
+     * @var mixed
+     * @access public  
+     */
+	public $defaults;
+	
     /**
      * Extracted parameters
      * @var array  
@@ -21,13 +35,45 @@ class Route {
 	public $params=array();
 
     /**
-     * Associative array of routes.
+     * Associative array of route rules.
      * @var array  
      * @access private 
      * @static 
      */
 	private static $rules=array();
-
+	
+	/**
+     * Associative array of route instances.
+     * @var array  
+     * @access private 
+     * @static 
+     */
+	private static $routes = array();
+	
+	protected function __construct($name, $rule, $defaults) {
+		$this->name = $name;
+		$this->rule = $rule;
+		$this->defaults = $defaults;
+	}
+	public function url($params = array(), $absolute = false, $protocol = 'http') {
+		if (is_callable($this->rule))
+			throw new Exception("The rule for '{$this->name}' route is a function and cannot be reversed");
+			
+		$url = is_array($this->rule)?$this->rule[0]:$this->rule;
+		
+		$replace = array('(' => '', ')' => '');
+		$params = array_merge($this->defaults, $params);
+		foreach($params as $key => $value)
+			$replace["<{$key}>"] = $value;
+			
+		$url = str_replace(array_keys($replace), array_values($replace), $url);
+		
+		if ($absolute)
+			$url = $protocol.'://'.$_SERVER['HTTP_HOST'].$url;
+			
+		return $url;
+	}
+	
     /**
      * Ads a route
      * 
@@ -59,9 +105,13 @@ class Route {
 	public static function get($name) {
 		if (!isset(Route::$rules[$name]))
 			throw new Exception("Route {$name} not found.");
-		$route = new Route();
-		$route-> name = $name;
-		return $route;
+		
+		if (!isset(Route::$routes[$name])) {
+			$rules = Route::$rules[$name];
+			Route::$routes[$name] = new static($name, $rules['rule'], $rules['defaults']);
+		}
+		
+		return Route::$routes[$name];
 	}
 
     /**
