@@ -8,6 +8,7 @@
  */
 abstract class DB
 {
+
     /**
      * An associative array of connections to databases
      * @var array
@@ -66,11 +67,11 @@ abstract class DB
      * @return Result_Database   Current drivers implementation of Result_Database
      * @access public
      */
-    public function named_query($query, $params=array())
+    public function named_query($query, $params = array())
     {
         $bind = array();
-        preg_match_all('#:(\w+)#is', $query, $matches,PREG_SET_ORDER);
-        foreach($matches as $match)
+        preg_match_all('#:(\w+)#is', $query, $matches, PREG_SET_ORDER);
+        foreach ($matches as $match)
         {
             if (isset($params[$match[1]]))
             {
@@ -78,7 +79,7 @@ abstract class DB
                 $bind[] = $params[$match[1]];
             }
         }
-        return $this->execute($query,$bind);
+        return $this->execute($query, $bind);
     }
 
     /**
@@ -105,7 +106,7 @@ abstract class DB
      * @access public
      * @static
      */
-    public static function query($type,$config = 'default')
+    public static function query($type, $config = 'default')
     {
         return DB::instance($config)->build_query($type);
     }
@@ -133,7 +134,7 @@ abstract class DB
      * @access public
      * @static
      */
-    public static function instance($config='default')
+    public static function instance($config = 'default')
     {
         if (!isset(DB::$_instances[$config]))
         {
