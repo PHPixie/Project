@@ -12,7 +12,21 @@ class Route {
      * @access public  
      */
 	public $name;
-
+	
+	/**
+     * Rule for this route.
+     * @var mixed
+     * @access public  
+     */
+	public $rule;
+	
+	/**
+     * Default parameters for this route.
+     * @var mixed
+     * @access public  
+     */
+	public $defaults;
+	
     /**
      * Extracted parameters
      * @var array  
@@ -21,13 +35,70 @@ class Route {
 	public $params=array();
 
     /**
-     * Associative array of routes.
+     * Associative array of route rules.
      * @var array  
      * @access private 
      * @static 
      */
 	private static $rules=array();
-
+	
+	/**
+     * Associative array of route instances.
+     * @var array  
+     * @access private 
+     * @static 
+     */
+	private static $routes = array();
+	
+	/**
+     * Constructs a route.
+     *
+     * @param string $name		Name of the route
+	 * @param mixed $rule		Rule for this route
+	 * @param array $defaults	Default parameters for the route
+	 * @return Route Initialized Route
+	 * @access protected
+     */
+	protected function __construct($name, $rule, $defaults) {
+		$this->name = $name;
+		$this->rule = $rule;
+		$this->defaults = $defaults;
+	}
+	
+	/**
+     * Generates a url for a route
+     *
+     * @param array $params    Parameters to substitute in the route
+	 * @param bool $absolute   Whether to return an absolute url
+	 * @param string $protocol	Protocol to use for absolute url
+	 * @return string Generated url
+	 * @access public
+     */
+	public function url($params = array(), $absolute = false, $protocol = 'http') {
+		if (is_callable($this->rule))
+			throw new Exception("The rule for '{$this->name}' route is a function and cannot be reversed");
+			
+		$url = is_array($this->rule)?$this->rule[0]:$this->rule;
+		
+		$replace = array();
+		$params = array_merge($this->defaults, $params);
+		foreach($params as $key => $value)
+			$replace["<{$key}>"] = $value;
+		$url = str_replace(array_keys($replace), array_values($replace), $url);
+		
+		$count = 1;
+		$chars='[^\(\)]*?';
+		while($count>0)
+			$url = preg_replace("#\({$chars}<{$chars}>{$chars}\)#", '', $url, -1, $count);
+			
+		$url = str_replace(array('(', ')'), '', $url);
+		
+		if ($absolute)
+			$url = $protocol.'://'.$_SERVER['HTTP_HOST'].$url;
+			
+		return $url;
+	}
+	
     /**
      * Ads a route
      * 
@@ -59,9 +130,13 @@ class Route {
 	public static function get($name) {
 		if (!isset(Route::$rules[$name]))
 			throw new Exception("Route {$name} not found.");
-		$route = new Route();
-		$route-> name = $name;
-		return $route;
+		
+		if (!isset(Route::$routes[$name])) {
+			$rules = Route::$rules[$name];
+			Route::$routes[$name] = new static($name, $rules['rule'], $rules['defaults']);
+		}
+		
+		return Route::$routes[$name];
 	}
 
     /**
