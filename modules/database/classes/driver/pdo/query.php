@@ -78,10 +78,61 @@ class Query_PDO_Driver extends Query_Database {
      * @access public 
      */
 	public function escape_value($val,&$params) {
-		if (is_object($val) && get_class($val) == 'Expression_Database')
+		if ($val instanceof Expression_Database)
 			return $val->value;
+		if ($val instanceof Query_Database)
+			return $this->subquery($val,$params);
 		$params[] = $val;
 		return '?';
+	}
+	
+	/**
+	 * Gets the SQL for a subquery and appends its parameters to current ones
+	 *
+	 * @param Query_Database $query Query builder for the subquery
+	 * @param array  &$params Reference to parameters array
+     * @return string  Subquery SQL
+     * @access public 
+	 */
+	protected function subquery($query, &$params) {
+		$query = $query->query();
+		$params = array_merge($params, $query[1]);
+		return "({$query[0]}) ";
+	}
+	
+	/**
+	 * Gets the SQL for a table to select from
+	 *
+	 * @param string|Expression_Database|Query_Database|array $table Table representation
+	 * @param array  &$params Reference to parameters array
+	 * @param string &alias   Alias for this table
+     * @return string  Table SQL
+     * @access public 
+	 */
+	public function escape_table($table, &$params) {
+		$alias=null;
+		if (is_array($table)) {
+			$alias = $table[1];
+			$table = $table[0];
+		}
+		
+		if (is_string($table)){
+			$table = $this->quote($table);
+			if ($alias != null)
+				$table.= " AS {$alias}";
+			return $table;
+		}
+		
+		if ($alias == null)
+			$alias = $this->last_alias();
+			
+		if($table instanceof Query_Database)
+			return "{$this->subquery($table,$params)} AS {$alias}";
+			
+		if($table instanceof Expression_Database)
+			return "({$table->value}) AS {$alias}";
+		
+		throw new Exception("Parameter type {get_class($table)} cannot be used as a table");
 	}
 	
     /**
@@ -94,6 +145,7 @@ class Query_PDO_Driver extends Query_Database {
 		
 		$query = '';
 		$params = array();
+		
 		if ($this->_type == 'insert') {
 			$query.= "INSERT INTO {$this->quote($this->_table)} ";
 			if (empty($this->_data) && $this->_db_type == 'pgsql'){
@@ -134,11 +186,12 @@ class Query_PDO_Driver extends Query_Database {
 						}
 					}
 				}
-				$query.= "FROM {$this->quote($this->_table)} ";
+				$query.="FROM {$this->escape_table($this->_table,$params)} ";
 			}
 			if ($this->_type == 'count') {
-				$query.= "SELECT COUNT(*) as {$this->quote('count')} FROM {$this->quote($this->_table)} ";	
+				$query.= "SELECT COUNT(*) as {$this->quote('count')} FROM {$this->escape_table($this->_table,$params)} ";	
 			}
+			
 			if ($this->_type == 'delete') {
 				if($this->_db_type!='sqlite'){
 					$query.= "DELETE {$this->last_alias()}.* FROM {$this->quote($this->_table)} ";
@@ -164,11 +217,7 @@ class Query_PDO_Driver extends Query_Database {
 			
 			foreach($this->_joins as $join) {
 				$table = $join[0];
-				if (is_array($table)){
-					$table = "{$this->quote($table[0])} as {$this->quote($table[1])}";
-				}else {
-					$table="{$this->quote($table)}";
-				}
+				$table = $this->escape_table($table,$params);
 				$query.= strtoupper($join[1])." JOIN {$table} ON {$this->get_condition_query($join[2],$params,true,true)} ";
 			}
 
@@ -198,6 +247,21 @@ class Query_PDO_Driver extends Query_Database {
 					}
 				}
 			}
+			
+			if (count($this->_union) > 0 && ($this->_type == 'select')) {
+				$query="({$query}) ";
+				foreach($this->_union as $union) {
+					$query.= $union[1]?"UNION ALL ":"UNION ";
+					if (is_subclass_of($union[0], 'Query_Database')) {
+						$query.=$this->subquery($union[0],$params);
+					}elseif(is_subclass_of($union[0], 'Expression_Database')) {
+						$query.="({$union[0]->value}) ";
+					}else {
+						throw new Exception("You can only use query builder instances or DB::expr for unions");
+					}
+				}
+			}
+			
 			if($this->_type != 'count'){
 				if ($this->_limit != null)
 					$query.= "LIMIT {$this->_limit} ";

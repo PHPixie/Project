@@ -125,8 +125,15 @@ abstract class Query_Database {
      * @var array     
      * @access protected 
      */
-	protected $methods = array('table' => 'string','data' => 'array','limit' => array('integer','NULL'),'offset' => array('integer','NULL'),'group_by' => array('string','NULL'),'type' => 'string');
+	protected $methods = array('data' => 'array','limit' => array('integer','NULL'),'offset' => array('integer','NULL'),'group_by' => array('string','NULL'),'type' => 'string');
 
+	/**
+	 * UNION queries
+	 * @var array
+	 * @access protected
+	 */
+	protected $_union = array();
+	
     /**
      * Generates a query in format that can be executed on current database implementation
      * 
@@ -169,7 +176,26 @@ abstract class Query_Database {
 		}
 		return $this;
 	}
-
+	
+	/**
+     * Sets the table to perform operations on, also supports subqueries
+     * 
+	 * @param string|Query_database|Expression_database $table table to select from
+	 * @param string $alias Alias for this table
+     * @return mixed Returns self if a table is passed, otherwise returns the table
+     * @access public 
+     */
+	public function table($table=null,$alias=null) {
+		if ($table == null)
+			return is_array($this->_table)?$this->_table[1]:$this->_table;
+			
+		if (!is_string($table) && $alias==null)
+			$alias = $this->add_alias();
+		$this->_table = $alias == null?$table:array($table, $alias);
+		
+		return $this;
+	}
+	
     /**
      * Magic methods to create methods for all generic query parts
      * 
@@ -352,7 +378,20 @@ abstract class Query_Database {
 			
 		throw new Exception('Incorrect conditional statement passed');
 	}
-
+	
+    /**
+     * Adds a UNION to the query
+     * 
+     * @param  Query_Database|Expression_Database  $query Query for the UNION
+	 * @param  string $all whether to do a UNION ALL, e.g. keep duplicate rows
+     * @return Query_Database  Returns self
+     * @access public 
+     */
+	public function union($query,$all=true) {
+		$this->_union[] = array($query,$all);
+		return $this;
+	}
+	
     /**
      * Gets last generated alias
      * 
@@ -361,7 +400,7 @@ abstract class Query_Database {
      */
 	public function last_alias() {
 		if ($this->_alias === null)
-			return $this->_table;
+			return $this->table();
 		return 'a'.$this->_alias;
 	}
 
