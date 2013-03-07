@@ -249,5 +249,10 @@ class Query_PDO_DriverTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('SELECT * FROM (SELECT * FROM `fairies` )  AS a0 LEFT JOIN `pixies` ON `fairies`.`id` = `pixie`.`id` LEFT JOIN `fairies` AS fae ON `fairies`.`id` = `fae`.`id` LEFT JOIN (SELECT * FROM `fairies` )  AS fae2 ON `fairies`.`id` = `fae2`.`id` ',current($this->object->query()));
 	}
 	
+	public function testExpressionSelect()
+	{
+		$this->object->table('fairies')->where('id','in',DB::expr("(SELECT id from fairies)"));
+		$this->assertEquals('SELECT * FROM `fairies` WHERE `fairies`.`id` in (SELECT id from fairies)  ',current($this->object->query()));
+	}
 	
 }

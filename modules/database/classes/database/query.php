@@ -5,8 +5,6 @@
  * Database drivers extend this class so that they can generate database specific queries.
  * The idea is to provide a database agnostic interface to query writing.
  *
- * @method mixed table(string $table = null) Set table to query. 
- *               Without arguments returns current table, returns self otherwise.
  *
  * @method mixed data(array $data = null) Set data for insert or update queries.
  *               Without arguments returns current data, returns self otherwise.
