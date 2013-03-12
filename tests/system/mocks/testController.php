@@ -1,13 +1,23 @@
 <?php
-class Test_Controller extends Controller {
+
+class Test_Controller extends Controller
+{
+
 	public $counter = 0;
-	public function before() {
+
+	public function before()
+	{
 		$this->counter++;
 	}
-	public function after() {
+
+	public function after()
+	{
 		$this->counter++;
 	}
-	public function action_index() {
+
+	public function action_index()
+	{
 		$this->counter++;
 	}
+
 }
