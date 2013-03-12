@@ -5,7 +5,7 @@
  * Database drivers extend this class so that they can generate database specific queries.
  * The idea is to provide a database agnostic interface to query writing.
  *
- * @method mixed table(string $table = null) Set table to query.
+ * @method mixed table(string $table = null) Set table to query. 
  *               Without arguments returns current table, returns self otherwise.
  *
  * @method mixed data(array $data = null) Set data for insert or update queries.
@@ -125,8 +125,15 @@ abstract class Query_Database
      * @var array
      * @access protected
      */
-    protected $methods = array('table' => 'string', 'data' => 'array', 'limit' => array('integer', 'NULL'), 'offset' => array('integer','NULL'), 'group_by' => array('string', 'NULL'), 'type' => 'string');
+	protected $methods = array('data' => 'array','limit' => array('integer','NULL'),'offset' => array('integer','NULL'),'group_by' => array('string','NULL'),'type' => 'string');
 
+	/**
+	 * UNION queries
+	 * @var array
+	 * @access protected
+	 */
+	protected $_union = array();
+	
     /**
      * Generates a query in format that can be executed on current database implementation
      *
@@ -175,6 +182,31 @@ abstract class Query_Database
         return $this;
     }
 
+	/**
+     * Sets the table to perform operations on, also supports subqueries
+     * 
+	 * @param string|Query_database|Expression_database $table table to select from
+	 * @param string $alias Alias for this table
+     * @return mixed Returns self if a table is passed, otherwise returns the table
+     * @access public 
+     */
+	public function table($table=null,$alias=null)
+    {
+		if ($table == null)
+        {
+			return is_array($this->_table)?$this->_table[1]:$this->_table;
+        }
+			
+		if (!is_string($table) && $alias==null)
+        {
+
+			$alias = $this->add_alias();
+        }
+		$this->_table = $alias == null?$table:array($table, $alias);
+		
+		return $this;
+	}
+#
     /**
      * Magic methods to create methods for all generic query parts
      *

@@ -204,5 +204,55 @@ class Query_PDO_DriverTest extends PHPUnit_Framework_TestCase
 		}
 		$this->assertEquals(true,$except);
     }
-    
+	
+	public function testUnion()
+	{
+		$stub=(object)array('db_type'=>'mysql');
+		$subquery = new Query_PDO_Driver($stub, 'select');
+		$subquery->table('fairies');
+		$this->object->table('fairies');
+		$this->object->where('id', '>', 7);
+		$this->object->union($subquery);
+		$this->object->union($subquery);
+		$this->assertEquals('(SELECT * FROM `fairies` WHERE `fairies`.`id` > ?  ) UNION ALL (SELECT * FROM `fairies` ) UNION ALL (SELECT * FROM `fairies` ) ',current($this->object->query()));
+	}
+	
+	public function testSubselect()
+	{
+		$stub=(object)array('db_type'=>'mysql');
+		$subquery = new Query_PDO_Driver($stub, 'select');
+		$subquery->fields('id')->table('fairies');
+		$this->object->table('fairies')->where('id', 7)->where('id', 'in', $subquery);
+		$this->assertEquals('SELECT * FROM `fairies` WHERE `fairies`.`id` = ? AND `fairies`.`id` in (SELECT `fairies`.`id` FROM `fairies` )   ',current($this->object->query()));
+	}
+	
+	public function testSubtable()
+	{
+		$stub=(object)array('db_type'=>'mysql');
+		$subquery = new Query_PDO_Driver($stub, 'select');
+		$subquery->fields('id')->table('fairies');
+		$this->object->table($subquery)->where('id', 7);
+		$this->assertEquals('SELECT * FROM (SELECT `fairies`.`id` FROM `fairies` )  AS a0 WHERE `a0`.`id` = ?  ',current($this->object->query()));
+	}
+	
+	public function testJoinSubtable()
+	{
+		$stub=(object)array('db_type'=>'mysql');
+		$subquery = new Query_PDO_Driver($stub, 'select');
+		$subquery->table('fairies');
+		$this->object->table($subquery);
+		$this->object->join('pixies', array('fairies.id', '=', 'pixie.id'));
+		$this->object->join(array('fairies', 'fae'), array('fairies.id', '=', 'fae.id'));
+		$this->object->join(array($subquery, 'fae2'), array('fairies.id', '=', 'fae2.id'));
+		
+		
+		$this->assertEquals('SELECT * FROM (SELECT * FROM `fairies` )  AS a0 LEFT JOIN `pixies` ON `fairies`.`id` = `pixie`.`id` LEFT JOIN `fairies` AS fae ON `fairies`.`id` = `fae`.`id` LEFT JOIN (SELECT * FROM `fairies` )  AS fae2 ON `fairies`.`id` = `fae2`.`id` ',current($this->object->query()));
+	}
+	
+	public function testExpressionSelect()
+	{
+		$this->object->table('fairies')->where('id','in',DB::expr("(SELECT id from fairies)"));
+		$this->assertEquals('SELECT * FROM `fairies` WHERE `fairies`.`id` in (SELECT id from fairies)  ',current($this->object->query()));
+	}
+	
 }
