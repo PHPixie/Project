@@ -6,7 +6,7 @@ return array(
 				'controller' => 'home',
 				'action' => 'index'
 			)
-		)
+		),
 	),
-	'modules' => array('database', 'orm','cache')
+	'modules' => array('database', 'orm', 'cache'),
 );
