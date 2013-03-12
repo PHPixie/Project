@@ -422,6 +422,19 @@ abstract class Query_Database
 	}
 
 	/**
+	 * Adds a UNION to the query
+	 * 
+	 * @param  Query_Database|Expression_Database  $query Query for the UNION
+	 * @param  string $all whether to do a UNION ALL, e.g. keep duplicate rows
+	 * @return Query_Database  Returns self
+	 * @access public 
+	 */
+	public function union($query,$all=true) {
+		$this->_union[] = array($query,$all);
+		return $this;
+	}
+	
+	/**
 	 * Gets last generated alias
 	 *
 	 * @return string  Last generated alias. If no alias were created returns table name.

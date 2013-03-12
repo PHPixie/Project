@@ -57,6 +57,7 @@ class Bootstrap
 		 * Web folder
 		 */
 		define('WEBDIR', ROOTDIR.'web/');
+		
 		/**
 		 * Helper functions
 		 */
