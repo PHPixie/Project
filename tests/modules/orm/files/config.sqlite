@@ -1,9 +1,7 @@
-<?php
-
-return array(
-	'default' =>
-	array(
-		'connection' => 'sqlite:C:\\Users\\Dracony\\Documents\\GitHub\\PHPixie\\tests\\modules\\orm./files/test.sqlite',
-		'driver' => 'pdo',
-	),
+<?php return array (
+  'orm' => 
+  array (
+    'connection' => 'sqlite:C:\\wamp\\phpixie\\tests/modules/orm/files/test.sqlite',
+    'driver' => 'pdo',
+  ),
 );
