@@ -61,15 +61,19 @@ class Request
 	 *
 	 * @param string $key    Parameter key
 	 * @param mixed $default Default value
+	 * @param bool  $strip_tags Whether to apply strip_tags() for XSS protection
 	 * @return mixed Returns a value if a key is specified,
 	 *               or an array of GET parameters if it isn't.
 	 * @access public
 	 */
-	public function get($key = null, $default = null)
+	public function get($key = null, $default = null, $strip_tags=true)
 	{
 		if ($key == null)
 			return $this->_get;
-		return Misc::arr($this->_get, $key, $default);
+		$val = Misc::arr($this->_get, $key, $default);
+		if ($strip_tags)
+			return strip_tags($val);
+		return $val;
 	}
 
 	/**
@@ -77,15 +81,19 @@ class Request
 	 *
 	 * @param string $key    Parameter key
 	 * @param mixed $default Default value
+	 * @param bool  $strip_tags Whether to apply strip_tags() for XSS protection
 	 * @return mixed Returns a value if a key is specified,
 	 *               or an array of POST parameters if it isn't.
 	 * @access public
 	 */
-	public function post($key = null, $default = null)
+	public function post($key = null, $default = null, $strip_tags=true)
 	{
 		if ($key == null)
 			return $this->_post;
-		return Misc::arr($this->_post, $key, $default);
+		$val = Misc::arr($this->_post, $key, $default);
+		if ($strip_tags)
+			return strip_tags($val);
+		return $val;
 	}
 
 	/**

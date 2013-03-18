@@ -21,7 +21,11 @@ class requestTest extends PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		$route = (object) array('params' => array('controller' => 'test', 'action' => 'index', 'fairy_param' => 'Trixie'));
-		$this->object = new Request($route, 'GET', array('fairy_post' => 'Trixie'), array('fairy_get' => 'Trixie'), array('fairy_server' => 'Trixie'));
+		$this->object = new Request($route, 'GET', 
+			array('fairy_post' => 'Trixie', 'xss' => 'a<div></div>'), 
+			array('fairy_get' => 'Trixie', 'xss' => 'a<div></div>'), 
+			array('fairy_server' => 'Trixie')
+		);
 	}
 
 	/**
@@ -41,6 +45,8 @@ class requestTest extends PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals($this->object->get('fairy_get'), 'Trixie');
 		$this->assertEquals($this->object->get('bogus', 'default'), 'default');
+		$this->assertEquals($this->object->get('xss'), 'a');
+		$this->assertEquals($this->object->get('xss',null,false),'a<div></div>');
 	}
 
 	/**
@@ -51,6 +57,8 @@ class requestTest extends PHPUnit_Framework_TestCase
 	{
 		$this->assertEquals($this->object->post('fairy_post'), 'Trixie');
 		$this->assertEquals($this->object->post('bogus', 'default'), 'default');
+		$this->assertEquals($this->object->post('xss'), 'a');
+		$this->assertEquals($this->object->post('xss',null,false),'a<div></div>');
 	}
 
 	/**
