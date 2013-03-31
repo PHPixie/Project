@@ -61,18 +61,20 @@ class Request
 	 *
 	 * @param string $key    Parameter key
 	 * @param mixed $default Default value
-	 * @param bool  $strip_tags Whether to apply strip_tags() for XSS protection
+	 * @param bool  $filter_xss Whether to filter input for XSS protection
 	 * @return mixed Returns a value if a key is specified,
 	 *               or an array of GET parameters if it isn't.
 	 * @access public
 	 */
-	public function get($key = null, $default = null, $strip_tags=true)
+	public function get($key = null, $default = null, $filter_xss=true)
 	{
 		if ($key == null)
 			return $this->_get;
 		$val = Misc::arr($this->_get, $key, $default);
-		if ($strip_tags)
-			return strip_tags($val);
+		
+		if ($filter_xss)
+			return $this->filter_xss($val);
+			
 		return $val;
 	}
 
@@ -81,21 +83,43 @@ class Request
 	 *
 	 * @param string $key    Parameter key
 	 * @param mixed $default Default value
-	 * @param bool  $strip_tags Whether to apply strip_tags() for XSS protection
+	 * @param bool  $filter_xss Whether to filter input for XSS protection
 	 * @return mixed Returns a value if a key is specified,
 	 *               or an array of POST parameters if it isn't.
 	 * @access public
 	 */
-	public function post($key = null, $default = null, $strip_tags=true)
+	public function post($key = null, $default = null, $filter_xss=true)
 	{
 		if ($key == null)
 			return $this->_post;
 		$val = Misc::arr($this->_post, $key, $default);
-		if ($strip_tags)
-			return strip_tags($val);
+		
+		if ($filter_xss)
+			return $this->filter_xss($val);
+			
 		return $val;
 	}
 
+	/**
+	 * Filters input to prevent XSS attacks.
+	 * If an array is passed, filters all its elements recursively.
+	 *
+	 * @param mixed $val  Input to sanitize.
+	 * @return mixed Filtered values
+	 * @access public
+	 */
+	public function filter_xss($val) {
+		if (is_array($val)) {
+			array_walk_recursive($val, function( &$str) {
+				$str = strip_tags($str);
+			});
+		}else {
+			$val = strip_tags($val);
+		}
+		
+		return $val;
+	}
+	
 	/**
 	 * Retrieves a SERVER parameter
 	 *

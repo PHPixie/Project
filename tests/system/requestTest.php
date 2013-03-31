@@ -22,8 +22,8 @@ class requestTest extends PHPUnit_Framework_TestCase
 	{
 		$route = (object) array('params' => array('controller' => 'test', 'action' => 'index', 'fairy_param' => 'Trixie'));
 		$this->object = new Request($route, 'GET', 
-			array('fairy_post' => 'Trixie', 'xss' => 'a<div></div>'), 
-			array('fairy_get' => 'Trixie', 'xss' => 'a<div></div>'), 
+			array('fairy_post' => 'Trixie', 'xss' => 'a<div></div>','xss_arr'=>array(array('a<div></div>'))), 
+			array('fairy_get' => 'Trixie', 'xss' => 'a<div></div>','xss_arr'=>array(array('a<div></div>'))), 
 			array('fairy_server' => 'Trixie')
 		);
 	}
@@ -36,6 +36,16 @@ class requestTest extends PHPUnit_Framework_TestCase
 	{
 
 	}
+	
+	/**
+	 * @covers Request::filter_xss
+	 * 
+	 */
+	public function testFilter_Xss()
+	{
+		$this->assertEquals($this->object->filter_xss('a<div></div>'), 'a');
+		$this->assertEquals(current(current($this->object->filter_xss(array(array('a<div></div>'))))), 'a');
+	}
 
 	/**
 	 * @covers Request::get
@@ -46,7 +56,9 @@ class requestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->object->get('fairy_get'), 'Trixie');
 		$this->assertEquals($this->object->get('bogus', 'default'), 'default');
 		$this->assertEquals($this->object->get('xss'), 'a');
-		$this->assertEquals($this->object->get('xss',null,false),'a<div></div>');
+		$this->assertEquals($this->object->get('xss', null, false), 'a<div></div>');
+		$this->assertEquals(current(current($this->object->get('xss_arr', null, false))), 'a<div></div>');
+		$this->assertEquals(current(current($this->object->get('xss_arr'))), 'a');
 	}
 
 	/**
@@ -58,7 +70,9 @@ class requestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->object->post('fairy_post'), 'Trixie');
 		$this->assertEquals($this->object->post('bogus', 'default'), 'default');
 		$this->assertEquals($this->object->post('xss'), 'a');
-		$this->assertEquals($this->object->post('xss',null,false),'a<div></div>');
+		$this->assertEquals($this->object->post('xss', null, false), 'a<div></div>');
+		$this->assertEquals(current(current($this->object->post('xss_arr', null, false))), 'a<div></div>');
+		$this->assertEquals(current(current($this->object->post('xss_arr'))), 'a');
 	}
 
 	/**
