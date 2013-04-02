@@ -24,7 +24,7 @@ class requestTest extends PHPUnit_Framework_TestCase
 		$this->object = new Request($route, 'GET', 
 			array('fairy_post' => 'Trixie', 'xss' => 'a<div></div>','xss_arr'=>array(array('a<div></div>'))), 
 			array('fairy_get' => 'Trixie', 'xss' => 'a<div></div>','xss_arr'=>array(array('a<div></div>'))), 
-			array('fairy_server' => 'Trixie')
+			array('fairy_server' => 'Trixie','HTTP_HOST'=>'phpixie.com','REQUEST_URI'=>'/test/?test=test')
 		);
 	}
 
@@ -104,6 +104,20 @@ class requestTest extends PHPUnit_Framework_TestCase
 		$this->object->execute();
 	}
 
+	/**
+	 * @covers Request::url
+	 */
+	public function testUrl()
+	{
+		$this->assertEquals('http://phpixie.com/test/', $this->object->url());
+		$this->assertEquals('http://phpixie.com/test/?test=test', $this->object->url(true));
+		$this->object = new Request($this->object->route, 'GET', array(), array(), 
+			array('HTTPS' => 'on','HTTP_HOST'=>'phpixie.com','REQUEST_URI'=>'/test/?test=test')
+		);
+		$this->assertEquals('https://phpixie.com/test/', $this->object->url());
+		$this->assertEquals('https://phpixie.com/test/?test=test', $this->object->url(true));
+		
+	}
 	/**
 	 * @covers Request::execute
 	 * @todo   Implement testExecute().

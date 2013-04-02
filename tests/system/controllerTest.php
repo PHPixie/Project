@@ -23,7 +23,12 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 	{
 		$this->object = new Test_Controller;
 	}
-
+	
+	public function testRedirect() {
+		$this->object->redirect('http://google.com');
+		$this->assertEquals(false,$this->object->execute);
+		$this->assertContains('Location: http://google.com', $this->object->response->headers);
+	}
 	public function testRun()
 	{
 		$this->object->run('index');

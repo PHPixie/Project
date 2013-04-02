@@ -627,6 +627,20 @@ class ORM
 	}
 
 	/**
+	 * Gets the items id field value
+	 *
+	 * @return mixed   Item id
+	 * @access public
+	 */
+	public function id() 
+	{
+		if ($this->loaded())
+			return $this->_row[$this->id_field];
+			
+		return null;
+	}
+	
+	/**
 	 * Defines which relationships should be preloaded. You can only preload
 	 * belongs_to and has_one relationships. You can use the dot notation to
 	 * preload deep relationsips, e.g. 'tree.protector' will preload the tree

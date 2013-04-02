@@ -68,6 +68,22 @@ class Controller
 	}
 
 	/**
+	 * Shortcut for redirecting the user.
+	 * Use like this:
+	 * <code>
+	 *     return $this->redirect($url);
+	 * </code>
+	 *
+	 * @param string $url URL to redirect to.
+	 * @return void
+	 * @access public
+	 */
+	public function redirect($url) {
+		$this->response-> redirect($url);
+		$this->execute = false;
+	}
+	
+	/**
 	 * Runs the appropriate action.
 	 * It will execute the before() method before the action
 	 * and after() method after the action finishes.

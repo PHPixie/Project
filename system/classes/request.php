@@ -170,6 +170,25 @@ class Request
 	}
 
 	/**
+	 * Gets request URL
+	 *
+	 * @param bool $with_params Whether to preserve URL parameters
+	 * @return string URL of this request
+	 * @access public
+	 */
+	public function url($with_params = false) {
+		$url = $this->server('HTTPS') == 'on' ? 'https://':'http://';
+		$url.= $this->server('HTTP_HOST').$this->server('REQUEST_URI');
+
+		if (!$with_params) {
+			$pos = strpos($url, '?');
+			if ($pos !== false)
+				$url = substr($url, 0, $pos);
+		}
+		return $url;
+	}
+	
+	/**
 	 * Creates a Request representing current HTTP request.
 	 *
 	 * @return Request Request

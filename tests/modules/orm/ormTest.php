@@ -251,6 +251,14 @@ class ORMTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @covers ORM::id
+	 */
+	public function testId()
+	{
+		$fairy = $this->fairies->find();
+		$this->assertEquals(1,$fairy->id());
+	}
+	/**
 	 * @covers ORM::with
 	 * @todo   Implement testWith().
 	 */
