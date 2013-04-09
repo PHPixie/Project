@@ -3,3 +3,4 @@ migrate/*
 validate/*
 haml/*
 cache/*
+auth/*
