@@ -121,11 +121,11 @@ class Config
 		$group_name = array_shift($keys);
 		$group = static::get_group($group_name);
 		$subgroup = &$group;
-
+		$last_key = count($keys) - 1;
 		foreach ($keys as $i => $key)
 		{
 
-			if ($i == count($keys) - 1)
+			if ($i == $last_key)
 			{
 
 				$subgroup[$key] = $value;
