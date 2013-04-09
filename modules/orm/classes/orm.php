@@ -148,7 +148,7 @@ class ORM
 		}
 		if ($this->table == null)
 		{
-			$this->table = ORM::plural($this->model_name);
+			$this->table = static::plural($this->model_name);
 		}
 		$this->query->table($this->table);
 
@@ -165,7 +165,7 @@ class ORM
 				$normalized[$key] = $rel;
 				if (!isset($rel['model']))
 				{
-					$rel['model'] = $normalized[$key]['model'] = $rels == 'has_many' ? ORM::singular($key) : $key;
+					$rel['model'] = $normalized[$key]['model'] = $rels == 'has_many' ? static::singular($key) : $key;
 				}
 
 				$normalized[$key]['type'] = $rels;
@@ -256,7 +256,7 @@ class ORM
 					{
 						throw new Exception("Relationship '{$rel_name}' is of has_many type and cannot be preloaded view with()");
 					}
-					$rel_model = ORM::factory($rel['model']);
+					$rel_model = static::factory($rel['model']);
 
 					if ($rel['type'] == 'belongs_to')
 					{
@@ -396,7 +396,7 @@ class ORM
 		$relations = array_merge($this->has_one, $this->has_many, $this->belongs_to);
 		if ($target = Misc::arr($relations, $column, false))
 		{
-			$model = ORM::factory($target['model']);
+			$model = static::factory($target['model']);
 			$model->query = clone $this->query;
 			if ($this->loaded())
 			{
@@ -619,11 +619,11 @@ class ORM
 	 */
 	public function columns()
 	{
-		if (!isset(ORM::$_column_cache[$this->table]))
+		if (!isset(static::$_column_cache[$this->table]))
 		{
-			ORM::$_column_cache[$this->table] = DB::instance($this->connection)->list_columns($this->table);
+			static::$_column_cache[$this->table] = DB::instance($this->connection)->list_columns($this->table);
 		}
-		return ORM::$_column_cache[$this->table];
+		return static::$_column_cache[$this->table];
 	}
 
 	/**

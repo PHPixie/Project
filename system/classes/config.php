@@ -29,21 +29,21 @@ class Config
 	public static function get_group($name)
 	{
 
-		if (!isset(Config::$groups[$name]))
+		if (!isset(static::$groups[$name]))
 		{
 
 			$file = Misc::find_file('config', $name);
 
 			if (!$file)
-				Config::$groups[$name] = array(
+				static::$groups[$name] = array(
 					'file' => APPDIR.'config/'.$name.'.php',
 					'options' => array()
 				);
 			else
-				Config::load_group($name, $file);
+				static::load_group($name, $file);
 		}
 
-		return Config::$groups[$name]['options'];
+		return static::$groups[$name]['options'];
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Config
 	public static function load_group($name, $file)
 	{
 
-		Config::$groups[$name] = array(
+		static::$groups[$name] = array(
 			'file' => $file,
 			'options' => include($file)
 		);
@@ -86,7 +86,7 @@ class Config
 
 		$keys = explode('.', $p[0]);
 		$group_name = array_shift($keys);
-		$group = Config::get_group($group_name);
+		$group = static::get_group($group_name);
 		if (empty($keys))
 			return $group;
 
@@ -119,7 +119,7 @@ class Config
 	{
 		$keys = explode('.', $key);
 		$group_name = array_shift($keys);
-		$group = Config::get_group($group_name);
+		$group = static::get_group($group_name);
 		$subgroup = &$group;
 
 		foreach ($keys as $i => $key)
@@ -139,7 +139,7 @@ class Config
 			}
 		}
 
-		Config::$groups[$group_name]['options'] = $group;
+		static::$groups[$group_name]['options'] = $group;
 	}
 
 	/**
@@ -151,8 +151,8 @@ class Config
 	 */
 	public static function write($group)
 	{
-		Config::get_group($group);
-		$group = Config::$groups[$group];
+		static::get_group($group);
+		$group = static::$groups[$group];
 		file_put_contents($group['file'], "<?php\r\nreturn ".var_export($group['options'], true).";");
 	}
 

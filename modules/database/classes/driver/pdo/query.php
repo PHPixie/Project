@@ -288,11 +288,11 @@ class Query_PDO_Driver extends Query_Database
 				$query .= "HAVING {$this->get_condition_query($this->_having, $params, true)} ";
 			}
 
-			if ($this->_type == 'select' && !empty($this->_orderby))
+			if ($this->_type == 'select' && !empty($this->_order_by))
 			{
 				$query .= "ORDER BY ";
 				$first = true;
-				foreach ($this->_orderby as $order)
+				foreach ($this->_order_by as $order)
 				{
 					if (!$first)
 					{

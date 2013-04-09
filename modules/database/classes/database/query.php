@@ -91,7 +91,7 @@ abstract class Query_Database
 	 * @var array
 	 * @access protected
 	 */
-	protected $_orderby = array();
+	protected $_order_by = array();
 
 	/**
 	 * Database connection
@@ -208,7 +208,6 @@ abstract class Query_Database
 		return $this;
 	}
 
-#
 	/**
 	 * Magic methods to create methods for all generic query parts
 	 *
@@ -310,14 +309,14 @@ abstract class Query_Database
 	 * @throws Exception If ordering direction isn't DESC or ASC
 	 * @access public
 	 */
-	public function order_by($column, $dir)
+	public function order_by($column, $dir = 'ASC')
 	{
 		$dir = strtoupper($dir);
 		if ($dir != 'DESC' && $dir != 'ASC')
 		{
 			throw new Exception("Invalid sorting direction {$dir} specified");
 		}
-		$this->_orderby[] = array($column, $dir);
+		$this->_order_by[] = array($column, $dir);
 		return $this;
 	}
 
