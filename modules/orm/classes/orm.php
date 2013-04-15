@@ -366,7 +366,19 @@ class ORM
 	{
 
 	}
-
+	
+	public function __isset($property) {
+		if (array_key_exists($column, $this->_row))
+			return true;
+		if (array_key_exists($column, $this->cached))
+			return true;
+		if (($val = $this->get($column)) !== null)
+			return true;
+		if ($target = Misc::arr($relations, $column, false))
+			return true;
+		return false;		
+	}
+	
 	/**
 	 * Magic method that allows accessing row columns as properties and also facilitates
 	 * access to relationships and custom properties defined in get() method.
