@@ -368,13 +368,13 @@ class ORM
 	}
 	
 	public function __isset($property) {
-		if (array_key_exists($column, $this->_row))
+		if (array_key_exists($property, $this->_row))
 			return true;
-		if (array_key_exists($column, $this->cached))
+		if (array_key_exists($property, $this->cached))
 			return true;
-		if (($val = $this->get($column)) !== null)
+		if (($val = $this->get($property)) !== null)
 			return true;
-		if ($target = Misc::arr($relations, $column, false))
+		if ($target = Misc::arr($relations, $property, false))
 			return true;
 		return false;		
 	}
