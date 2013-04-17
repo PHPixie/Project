@@ -22,7 +22,7 @@ class Debug
 	 * @return void
 	 * @access public
 	 */
-	public function render_error($exception)
+	public static function render_error($exception)
 	{
 		ob_end_clean();
 
