@@ -94,7 +94,7 @@ class Route
 		while ($count > 0)
 			$url = preg_replace("#\({$chars}<{$chars}>{$chars}\)#", '', $url, -1, $count);
 
-		$url = str_replace(array('(', ')'), '', $url);
+		$url = Config::get('core.basepath','/').str_replace(array('(', ')'), '', $url);
 
 		if ($absolute)
 			$url = $protocol.'://'.$_SERVER['HTTP_HOST'].$url;
