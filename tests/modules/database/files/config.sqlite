@@ -1,7 +1,0 @@
-<?php return array (
-  'default' => 
-  array (
-    'connection' => 'sqlite:C:\\wamp\\phpixie\\tests/modules/database/files/test.sqlite',
-    'driver' => 'pdo',
-  ),
-);
