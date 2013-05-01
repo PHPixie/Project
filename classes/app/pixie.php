@@ -13,4 +13,8 @@ class Pixie extends \PHPixie\Pixie {
 		'db' => '\PHPixie\DB',
 		'orm' => '\PHPixie\ORM'
 	);
+	
+	protected function after_bootstrap(){
+		//Whatever code you want to run after bootstrap is done.		
+	};
 }
