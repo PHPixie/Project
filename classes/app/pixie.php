@@ -16,5 +16,5 @@ class Pixie extends \PHPixie\Pixie {
 	
 	protected function after_bootstrap(){
 		//Whatever code you want to run after bootstrap is done.		
-	};
+	}
 }
