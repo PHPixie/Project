@@ -1,7 +1,7 @@
 <?php
 return array(
 	'default' => array('(/<controller>(/<action>(/<id>)))', array(
-					'controller' => 'hello',
+					'controller' => 'Hello',
 					'action' => 'index'
 					)
 				),
