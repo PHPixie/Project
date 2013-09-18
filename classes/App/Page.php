@@ -1,6 +1,11 @@
 <?php
 namespace App;
 
+/**
+ * Base controller
+ *
+ * @property-read \App\Pixie $pixie Pixie dependency container
+ */
 class Page extends \PHPixie\Controller {
 	
 	protected $view;
