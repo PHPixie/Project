@@ -10,5 +10,10 @@
 		"phpixie/db": "2.*@dev",
 		"phpixie/orm": "2.*@dev"
     	},
-    	"minimum-stability": "dev"
+    	"minimum-stability": "dev",
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.*-dev"
+		}
+	}
 }
