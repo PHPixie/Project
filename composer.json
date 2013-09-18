@@ -1,7 +1,13 @@
 {
-"require": {
-	"phpixie/core": "2.*@dev",
-	"phpixie/db": "2.*@dev",
-	"phpixie/orm": "2.*@dev"
+	"name": "phpixie/project",
+	"type": "project",
+	"description" : "PHPixie skeleton project",
+	"autoload": {
+		"psr-0": {"": "classes/"}
+	},
+	"require": {
+		"phpixie/core": "2.*@dev",
+		"phpixie/db": "2.*@dev",
+		"phpixie/orm": "2.*@dev"
     }	
 }
