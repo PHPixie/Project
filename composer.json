@@ -1,7 +1,8 @@
 {
 	"name": "phpixie/project",
 	"type": "project",
-	"description" : "PHPixie skeleton project",
+	"description" : "PHPixie skeleton project
+	"license" : "BSD",
 	"autoload": {
 		"psr-0": {"": "classes/"}
 	},
