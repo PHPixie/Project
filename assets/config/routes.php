@@ -2,7 +2,7 @@
 
 return array(
 	'default' => array(
-		'(<controller>(/<action>(/<id>)))', 
+		'(/<controller>(/<action>(/<id>)))', 
 		array(
 			'controller' => 'hello',
 			'action' => 'index'
