@@ -1,0 +1,20 @@
+{
+    "require": {
+        "phpixie/framework": "3.*@dev",
+        "phpixie/debug": "3.*@dev",
+        "phpixie/router": "3.*@dev",
+        "phpixie/template": "3.*@dev",
+        "phpixie/filesystem": "3.*@dev",
+        "phpixie/database": "3.*@dev",
+        "phpixie/config": "3.*@dev",
+        "phpixie/orm": "3.*@dev",
+        "phpixie/slice": "3.*@dev",
+        "phpixie/processors": "3.*@dev",
+        "phpixie/http": "3.*@dev",
+        "psr/http-message": "1.*@dev",
+        "phpixie/http-processors": "3.*@dev"
+    },
+    "require-dev": {
+        "phpixie/test": "3.*@dev"
+    }
+}
