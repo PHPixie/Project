@@ -1,8 +1,11 @@
 {
     "require": {
+        "phpixie/default-bundle": "3.*@dev",
+        "phpixie/bundle-framework": "3.*@dev",
+        "phpixie/bundles": "3.*@dev",
         "phpixie/framework": "3.*@dev",
         "phpixie/debug": "3.*@dev",
-        "phpixie/router": "3.*@dev",
+        "phpixie/route": "3.*@dev",
         "phpixie/template": "3.*@dev",
         "phpixie/filesystem": "3.*@dev",
         "phpixie/database": "3.*@dev",
@@ -16,5 +19,13 @@
     },
     "require-dev": {
         "phpixie/test": "3.*@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Project\\": [
+                "src/Project",
+                "bundles/app/src/Project"
+            ]
+        }
     }
 }

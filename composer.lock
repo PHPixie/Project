@@ -1,11 +1,132 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6210d1b9b08db036457544a43c1d69ba",
+    "hash": "da17fa6ca194e96aa05ec4358bd370ba",
     "packages": [
+        {
+            "name": "phpixie/bundle-framework",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPixie/Bundle-Framework.git",
+                "reference": "8092f6d50ee31b70a14ec418fe5d9d1209afa3c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPixie/Bundle-Framework/zipball/8092f6d50ee31b70a14ec418fe5d9d1209afa3c3",
+                "reference": "8092f6d50ee31b70a14ec418fe5d9d1209afa3c3",
+                "shasum": ""
+            },
+            "require": {
+                "phpixie/bundles": "3.*@dev",
+                "phpixie/config": "3.*@dev",
+                "phpixie/database": "3.*@dev",
+                "phpixie/debug": "3.*@dev",
+                "phpixie/filesystem": "3.*@dev",
+                "phpixie/framework": "3.*@dev",
+                "phpixie/http": "3.*@dev",
+                "phpixie/http-processors": "3.*@dev",
+                "phpixie/orm": "3.*@dev",
+                "phpixie/processors": "3.*@dev",
+                "phpixie/route": "3.*@dev",
+                "phpixie/slice": "3.*@dev",
+                "phpixie/template": "3.*@dev",
+                "psr/http-message": "1.*@dev"
+            },
+            "require-dev": {
+                "phpixie/test": "3.*@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPixie\\": "src/PHPixie",
+                    "PHPixie\\Tests\\": "tests/PHPixie/Tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Roman Tsiupa",
+                    "email": "draconyster@gmail.com",
+                    "homepage": "http://dracony.org"
+                }
+            ],
+            "description": "PHPixie Bundle Framework",
+            "homepage": "http://phpixie.com",
+            "keywords": [
+                "framework"
+            ],
+            "time": "2015-07-07 16:08:43"
+        },
+        {
+            "name": "phpixie/bundles",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPixie/Bundles.git",
+                "reference": "1a063c4837a5466c3731a309974d7546e9f586c9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPixie/Bundles/zipball/1a063c4837a5466c3731a309974d7546e9f586c9",
+                "reference": "1a063c4837a5466c3731a309974d7546e9f586c9",
+                "shasum": ""
+            },
+            "require": {
+                "phpixie/database": "3.*@dev",
+                "phpixie/filesystem": "3.*@dev",
+                "phpixie/http": "3.*@dev",
+                "phpixie/orm": "3.*@dev",
+                "phpixie/processors": "3.*@dev",
+                "phpixie/route": "3.*@dev",
+                "phpixie/slice": "3.*@dev",
+                "psr/http-message": "1.0.*@dev"
+            },
+            "require-dev": {
+                "phpixie/test": "3.*@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPixie\\": "src/PHPixie",
+                    "PHPixie\\Tests\\": "tests/PHPixie/Tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Roman Tsiupa",
+                    "email": "draconyster@gmail.com",
+                    "homepage": "http://dracony.org"
+                }
+            ],
+            "description": "Bundle library for PHPixie",
+            "homepage": "http://phpixie.com",
+            "keywords": [
+                "http",
+                "psr-7"
+            ],
+            "time": "2015-07-07 16:21:01"
+        },
         {
             "name": "phpixie/config",
             "version": "dev-master",
@@ -161,6 +282,71 @@
             "time": "2015-05-10 10:48:46"
         },
         {
+            "name": "phpixie/default-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPixie/Default-Bundle.git",
+                "reference": "93c2f1320a94fca49736158c13199d7cad1fdfaa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPixie/Default-Bundle/zipball/93c2f1320a94fca49736158c13199d7cad1fdfaa",
+                "reference": "93c2f1320a94fca49736158c13199d7cad1fdfaa",
+                "shasum": ""
+            },
+            "require": {
+                "phpixie/bundle-framework": "3.*@dev",
+                "phpixie/bundles": "3.*@dev",
+                "phpixie/config": "3.*@dev",
+                "phpixie/database": "3.*@dev",
+                "phpixie/debug": "3.*@dev",
+                "phpixie/filesystem": "3.*@dev",
+                "phpixie/framework": "3.*@dev",
+                "phpixie/http": "3.*@dev",
+                "phpixie/http-processors": "3.*@dev",
+                "phpixie/orm": "3.*@dev",
+                "phpixie/processors": "3.*@dev",
+                "phpixie/route": "3.*@dev",
+                "phpixie/slice": "3.*@dev",
+                "phpixie/template": "3.*@dev",
+                "psr/http-message": "1.0.*@dev"
+            },
+            "require-dev": {
+                "phpixie/test": "3.*@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPixie\\": "src/PHPixie",
+                    "PHPixie\\Tests\\": "tests/PHPixie/Tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Roman Tsiupa",
+                    "email": "draconyster@gmail.com",
+                    "homepage": "http://dracony.org"
+                }
+            ],
+            "description": "Bundle library for PHPixie",
+            "homepage": "http://phpixie.com",
+            "keywords": [
+                "http",
+                "psr-7"
+            ],
+            "time": "2015-07-05 18:58:59"
+        },
+        {
             "name": "phpixie/filesystem",
             "version": "dev-master",
             "source": {
@@ -217,12 +403,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPixie/Framework.git",
-                "reference": "c76d35248da53c222e87840ebab96292ba6cb4bf"
+                "reference": "af45ef23d7edaf0fb3c95d68f96ffa6e2b71754d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPixie/Framework/zipball/c76d35248da53c222e87840ebab96292ba6cb4bf",
-                "reference": "c76d35248da53c222e87840ebab96292ba6cb4bf",
+                "url": "https://api.github.com/repos/PHPixie/Framework/zipball/af45ef23d7edaf0fb3c95d68f96ffa6e2b71754d",
+                "reference": "af45ef23d7edaf0fb3c95d68f96ffa6e2b71754d",
                 "shasum": ""
             },
             "require": {
@@ -234,7 +420,7 @@
                 "phpixie/http-processors": "3.*@dev",
                 "phpixie/orm": "3.*@dev",
                 "phpixie/processors": "3.*@dev",
-                "phpixie/router": "3.*@dev",
+                "phpixie/route": "3.*@dev",
                 "phpixie/slice": "3.*@dev",
                 "phpixie/template": "3.*@dev",
                 "psr/http-message": "1.*@dev"
@@ -270,7 +456,7 @@
             "keywords": [
                 "processors"
             ],
-            "time": "2015-05-31 13:20:55"
+            "time": "2015-07-07 16:08:01"
         },
         {
             "name": "phpixie/http",
@@ -278,12 +464,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPixie/HTTP.git",
-                "reference": "5cd4db4d4e92df79f5670913f728fe49563500dd"
+                "reference": "b2696997b385eef9c2333a749e325e76d51bd970"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPixie/HTTP/zipball/5cd4db4d4e92df79f5670913f728fe49563500dd",
-                "reference": "5cd4db4d4e92df79f5670913f728fe49563500dd",
+                "url": "https://api.github.com/repos/PHPixie/HTTP/zipball/b2696997b385eef9c2333a749e325e76d51bd970",
+                "reference": "b2696997b385eef9c2333a749e325e76d51bd970",
                 "shasum": ""
             },
             "require": {
@@ -322,7 +508,7 @@
                 "http",
                 "psr-7"
             ],
-            "time": "2015-05-30 13:03:15"
+            "time": "2015-06-24 16:01:18"
         },
         {
             "name": "phpixie/http-processors",
@@ -330,12 +516,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPixie/HTTP-Processors.git",
-                "reference": "bc72c4c9fe72f45365163fca9f90aab5b7c71b5f"
+                "reference": "0a7ed23ee1957a5f5d8de8861f87acc0dee3db89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPixie/HTTP-Processors/zipball/bc72c4c9fe72f45365163fca9f90aab5b7c71b5f",
-                "reference": "bc72c4c9fe72f45365163fca9f90aab5b7c71b5f",
+                "url": "https://api.github.com/repos/PHPixie/HTTP-Processors/zipball/0a7ed23ee1957a5f5d8de8861f87acc0dee3db89",
+                "reference": "0a7ed23ee1957a5f5d8de8861f87acc0dee3db89",
                 "shasum": ""
             },
             "require": {
@@ -375,7 +561,7 @@
             "keywords": [
                 "processors"
             ],
-            "time": "2015-05-13 10:25:02"
+            "time": "2015-07-01 11:37:00"
         },
         {
             "name": "phpixie/orm",
@@ -383,12 +569,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPixie/ORM.git",
-                "reference": "c37ca0a7756961107c686df4f0f6c822751b9bc9"
+                "reference": "5e8fa70c16800773bae066246d27e68f304add76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPixie/ORM/zipball/c37ca0a7756961107c686df4f0f6c822751b9bc9",
-                "reference": "c37ca0a7756961107c686df4f0f6c822751b9bc9",
+                "url": "https://api.github.com/repos/PHPixie/ORM/zipball/5e8fa70c16800773bae066246d27e68f304add76",
+                "reference": "5e8fa70c16800773bae066246d27e68f304add76",
                 "shasum": ""
             },
             "require": {
@@ -427,7 +613,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2015-03-25 10:18:31"
+            "time": "2015-06-12 15:15:33"
         },
         {
             "name": "phpixie/processors",
@@ -435,12 +621,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPixie/Processors.git",
-                "reference": "df40bca7a1e6f8d33ccd0369eec0b9d77a0c889a"
+                "reference": "2aa1be44ac034f38b959d307d4e32f8dcb736601"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPixie/Processors/zipball/df40bca7a1e6f8d33ccd0369eec0b9d77a0c889a",
-                "reference": "df40bca7a1e6f8d33ccd0369eec0b9d77a0c889a",
+                "url": "https://api.github.com/repos/PHPixie/Processors/zipball/2aa1be44ac034f38b959d307d4e32f8dcb736601",
+                "reference": "2aa1be44ac034f38b959d307d4e32f8dcb736601",
                 "shasum": ""
             },
             "require-dev": {
@@ -475,20 +661,20 @@
                 "Chain",
                 "processors"
             ],
-            "time": "2015-05-06 00:59:49"
+            "time": "2015-06-30 11:38:39"
         },
         {
-            "name": "phpixie/router",
+            "name": "phpixie/route",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PHPixie/Router.git",
-                "reference": "d4a0669281bfa598981db4bbe64e79f4366d3283"
+                "url": "https://github.com/PHPixie/Route.git",
+                "reference": "6f64c58d02789e67d4aa81b6be434934e3394b83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPixie/Router/zipball/d4a0669281bfa598981db4bbe64e79f4366d3283",
-                "reference": "d4a0669281bfa598981db4bbe64e79f4366d3283",
+                "url": "https://api.github.com/repos/PHPixie/Route/zipball/6f64c58d02789e67d4aa81b6be434934e3394b83",
+                "reference": "6f64c58d02789e67d4aa81b6be434934e3394b83",
                 "shasum": ""
             },
             "require": {
@@ -529,7 +715,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2015-06-05 14:36:11"
+            "time": "2015-06-05 15:29:19"
         },
         {
             "name": "phpixie/slice",
@@ -586,12 +772,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPixie/Template.git",
-                "reference": "0ffc4064e341c0f7adbc6e65245d1f9c1180b96f"
+                "reference": "a8db854c8ecff3ed7d65c932c0473b5bd914a757"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPixie/Template/zipball/0ffc4064e341c0f7adbc6e65245d1f9c1180b96f",
-                "reference": "0ffc4064e341c0f7adbc6e65245d1f9c1180b96f",
+                "url": "https://api.github.com/repos/PHPixie/Template/zipball/a8db854c8ecff3ed7d65c932c0473b5bd914a757",
+                "reference": "a8db854c8ecff3ed7d65c932c0473b5bd914a757",
                 "shasum": ""
             },
             "require": {
@@ -630,7 +816,7 @@
                 "template",
                 "templating"
             ],
-            "time": "2015-06-03 09:39:39"
+            "time": "2015-07-02 20:31:04"
         },
         {
             "name": "psr/http-message",
@@ -731,9 +917,12 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "phpixie/default-bundle": 20,
+        "phpixie/bundle-framework": 20,
+        "phpixie/bundles": 20,
         "phpixie/framework": 20,
         "phpixie/debug": 20,
-        "phpixie/router": 20,
+        "phpixie/route": 20,
         "phpixie/template": 20,
         "phpixie/filesystem": 20,
         "phpixie/database": 20,
