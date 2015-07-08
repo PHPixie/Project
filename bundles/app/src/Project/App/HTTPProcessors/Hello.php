@@ -1,20 +1,21 @@
 <?php
 
-namespace Project\App\Processors\HTTP;
+namespace Project\App\HTTPProcessors;
 
-class Hello extends PHPixie\DefaultBundle\Processor\HTTP\Actions
+class Hello extends \PHPixie\DefaultBundle\Processor\HTTP\Actions
 {
-    protected $builder;
+    protected $template;
+    protected $attribute = 'action';
     
-    public function __construct($builder)
+    public function __construct($template)
     {
-        $this->builder = $builder;
+        $this->template = $template;
     }
     
-    public function process($request)
+    public function greetAction($request)
     {
-        $template = $this->template->container('app:hello');
-        $template->message = "Have fun coding!";
-        return $template;
+        $container = $this->template->get('app:hello/greet');
+        $container->message = "Have fun coding!";
+        return $container;
     }
 }

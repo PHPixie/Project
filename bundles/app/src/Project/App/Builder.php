@@ -4,8 +4,13 @@ namespace Project\App;
 
 class Builder extends \PHPixie\DefaultBundle\Builder
 {
-    protected function httpProcessor()
+    protected function buildHttpProcessor()
     {
-        return new HTTPPRocessor();
+        return new HTTPProcessor($this);
+    }
+    
+    protected function getRootDirectory()
+    {
+        return realpath(__DIR__.'/../../../');
     }
 }
