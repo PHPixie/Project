@@ -1,10 +1,17 @@
 <?php
 
 return array(
-    'type'     => 'pattern',
-    'path'     => '(<processor>(/<action>))',
-    'defaults' => array(
-        'processor' => 'hello',
-        'action'    => 'greet'
+    'type'      => 'group',
+    'resolvers' => array(
+        
+        'default' => array(
+            'type'     => 'pattern',
+            'path'     => '(<processor>(/<action>))',
+            'defaults' => array(
+                'processor' => 'hello',
+                'action'    => 'greet'
+            )
+        )
+        
     )
 );
