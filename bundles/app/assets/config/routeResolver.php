@@ -9,7 +9,7 @@ return array(
             'path'     => '(<processor>(/<action>))',
             'defaults' => array(
                 'processor' => 'hello',
-                'action'    => 'greet'
+                'action'    => 'default'
             )
         )
         

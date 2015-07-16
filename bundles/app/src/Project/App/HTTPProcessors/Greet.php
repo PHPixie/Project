@@ -2,19 +2,18 @@
 
 namespace Project\App\HTTPProcessors;
 
-class Hello extends \PHPixie\DefaultBundle\Processor\HTTP\Actions
+class Greet extends \PHPixie\DefaultBundle\Processor\HTTP\Actions
 {
     protected $template;
-    protected $attribute = 'action';
     
     public function __construct($template)
     {
         $this->template = $template;
     }
     
-    public function greetAction($request)
+    public function defaultAction($request)
     {
-        $container = $this->template->get('app:hello/greet');
+        $container = $this->template->get('app:greet');
         $container->message = "Have fun coding!";
         return $container;
     }
