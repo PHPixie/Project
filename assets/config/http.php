@@ -8,8 +8,7 @@ return array(
         'type' => 'group',
         'resolvers' => array(
             'app' => array(
-                'type'     => 'prefix',
-                'pattern'  => '/',
+                'type' => 'prefix',
                 'defaults' => array(
                     'bundle' => 'app'
                 ),
