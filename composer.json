@@ -14,6 +14,7 @@
             ]
         }
     },
+    "minimum-stability": "dev",
     "require": {
         "phpixie/default-bundle": "3.*@dev",
         "phpixie/bundle-framework": "3.*@dev",
