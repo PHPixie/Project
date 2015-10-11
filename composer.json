@@ -1,51 +1,29 @@
 {
-	"name": "phpixie/project",
-	"type": "project",
-	"description" : "PHPixie skeleton project",
-	"license" : "BSD",
+    "name": "phpixie/project",
+    "type": "project",
+    "description" : "PHPixie skeleton project",
+    "license" : "BSD",
     "autoload": {
         "psr-4": {
             "": [
                 "src/",
                 "tests/",
-                
+
                 "bundles/app/src/",
                 "bundles/app/tests/"
             ]
         }
     },
     "require": {
-        "phpixie/default-bundle": "3.*@dev",
-        "phpixie/bundle-framework": "3.*@dev",
-        "phpixie/bundles": "3.*@dev",
-        "phpixie/framework": "3.*@dev",
-        "phpixie/debug": "3.*@dev",
-        "phpixie/route": "3.*@dev",
-        "phpixie/template": "3.*@dev",
-        "phpixie/filesystem": "3.*@dev",
-        "phpixie/database": "3.*@dev",
-        "phpixie/config": "3.*@dev",
-        "phpixie/orm": "3.*@dev",
-        "phpixie/slice": "3.*@dev",
-        "phpixie/processors": "3.*@dev",
-        "phpixie/http": "3.*@dev",
-        "psr/http-message": "1.*@dev",
-        "phpixie/http-processors": "3.*@dev",
-        "phpixie/auth": "3.*@dev",
-        "phpixie/auth-orm": "3.*@dev",
-        "phpixie/auth-processors": "3.*@dev",
-        "phpixie/security": "3.*@dev",
-        "phpixie/auth-http": "3.*@dev",
-        "phpixie/auth-login": "3.*@dev",
-        "phpixie/paginate": "3.*@dev",
-        "phpixie/paginate-orm": "3.*@dev"
+        "phpixie/default-bundle": "~3.0",
+        "phpixie/bundle-framework": "~3.0"
     },
     "require-dev": {
-        "phpixie/test": "3.*@dev"
+        "phpixie/test": "~3.0"
     },
-	"extra": {
-		"branch-alias": {
-			"dev-master": "3.*-dev"
-		}
-	}
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.*-dev"
+        }
+    }
 }
