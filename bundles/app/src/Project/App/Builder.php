@@ -18,4 +18,9 @@ class Builder extends \PHPixie\DefaultBundle\Builder
     {
         return realpath(__DIR__.'/../../../');
     }
+    
+    public function bundleName()
+    {
+        return 'app';
+    }
 }
