@@ -9,6 +9,11 @@ class Builder extends \PHPixie\BundleFramework\Builder
         return new Bundles($this);
     }
     
+    protected function buildExtensions()
+    {
+        return new Extensions($this);
+    }
+    
     protected function getRootDirectory()
     {
         return realpath(__DIR__.'/../../../');
