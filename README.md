@@ -3,6 +3,8 @@
   <img src="https://phpixie.com/images/logo.png"/>
 </p>
 
+Website: [phpixie.com](https://phpixie.com/)
+
 PHPixie started as a micro framework and has gradually grown to be one of the 
 most popular fullstack PHP frameworks while retaining its high performance. 
 This is in part because of the strict architecture that avoids common pitfalls 
