@@ -1,0 +1,9 @@
+#!/usr/bin/php
+<?php
+
+require_once(__DIR__.'/vendor/autoload.php');
+
+$framework = new Project\Framework();
+$framework->registerDebugHandlers();
+$exitCode = $framework->processConsoleSapiCommand();
+exit($exitCode);

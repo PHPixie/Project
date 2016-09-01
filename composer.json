@@ -15,8 +15,8 @@
         }
     },
     "require": {
-        "phpixie/default-bundle": "~3.1",
-        "phpixie/bundle-framework": "~3.1"
+        "phpixie/default-bundle": "~3.6",
+        "phpixie/bundle-framework": "~3.2",
     },
     "require-dev": {
         "phpixie/test": "~3.0"
