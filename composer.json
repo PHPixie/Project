@@ -16,7 +16,8 @@
     },
     "require": {
         "phpixie/default-bundle": "~3.2",
-        "phpixie/bundle-framework": "~3.6"
+        "phpixie/bundle-framework": "~3.6",
+        "phpixie/framework-bundle": "~3.0"
     },
     "require-dev": {
         "phpixie/test": "~3.0"
@@ -25,5 +26,8 @@
         "branch-alias": {
             "dev-master": "3.*-dev"
         }
+    },
+    "scripts": {
+        "post-create-project-cmd" : "php ./console framework:installWebAssets"
     }
 }
