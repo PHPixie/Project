@@ -26,5 +26,8 @@
         "branch-alias": {
             "dev-master": "3.*-dev"
         }
+    },
+    "scripts": {
+        "post-create-project-cmd" : "php ./console framework:installWebAssets"
     }
 }
