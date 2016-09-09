@@ -7,7 +7,8 @@
         "psr-4": {
             "": [
                 "src/",
-                "tests/"
+                "tests/",
+                "bundles/app/src/"
             ]
         }
     },
@@ -25,6 +26,9 @@
         }
     },
     "scripts": {
-        "post-create-project-cmd" : "php ./console framework:installWebAssets"
+        "post-create-project-cmd" : [
+            "php ./console framework:generateBundle app",
+            "php ./console framework:installWebAssets"
+        ]
     }
 }
