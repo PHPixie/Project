@@ -16,7 +16,7 @@
     "require": {
         "phpixie/default-bundle": "~3.2",
         "phpixie/bundle-framework": "~3.6",
-        "phpixie/framework-bundle": "~3.0"
+        "phpixie/framework-bundle": "~3.3"
     },
     "require-dev": {
         "phpixie/test": "~3.0"
