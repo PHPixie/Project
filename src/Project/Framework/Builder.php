@@ -20,7 +20,7 @@ class Builder extends \PHPixie\BundleFramework\Builder
 
     /**
      * Your extension registry registry
-     * @return Bundles
+     * @return Extensions
      */
     protected function buildExtensions()
     {
@@ -29,7 +29,7 @@ class Builder extends \PHPixie\BundleFramework\Builder
 
     /**
      * Projects root directory
-     * @return Bundles
+     * @return string
      */
     protected function getRootDirectory()
     {

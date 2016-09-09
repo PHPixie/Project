@@ -25,7 +25,10 @@ class Console extends \PHPixie\DefaultBundle\Console
     
     /**
      * Build 'greet' command
-     * @return ConsoleCommands\Greet
+     *
+     * @param \PHPixie\Console\Command\Config $commandConfig
+     *
+     * @return Console\Greet
      */
     protected function buildGreetCommand($commandConfig)
     {
