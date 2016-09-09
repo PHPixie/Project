@@ -1,14 +1,15 @@
 {
     "name": "phpixie/project",
     "type": "project",
-    "description" : "PHPixie skeleton project",
-    "license" : "BSD",
+    "description": "PHPixie skeleton project",
+    "license": "BSD",
     "autoload": {
         "psr-4": {
             "": [
                 "src/",
                 "tests/",
-                "bundles/app/src/"
+                "bundles/app/src/",
+                "bundles/test/src/"
             ]
         }
     },
@@ -26,7 +27,7 @@
         }
     },
     "scripts": {
-        "post-create-project-cmd" : [
+        "post-create-project-cmd": [
             "php ./console framework:generateBundle app",
             "php ./console framework:installWebAssets"
         ]
