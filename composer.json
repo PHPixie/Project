@@ -1,23 +1,22 @@
 {
     "name": "phpixie/project",
     "type": "project",
-    "description" : "PHPixie skeleton project",
-    "license" : "BSD",
+    "description": "PHPixie skeleton project",
+    "license": "BSD",
     "autoload": {
         "psr-4": {
             "": [
                 "src/",
                 "tests/",
-
                 "bundles/app/src/",
-                "bundles/app/tests/"
+                "bundles/test/src/"
             ]
         }
     },
     "require": {
         "phpixie/default-bundle": "~3.2",
         "phpixie/bundle-framework": "~3.6",
-        "phpixie/framework-bundle": "~3.0"
+        "phpixie/framework-bundle": "~3.3"
     },
     "require-dev": {
         "phpixie/test": "~3.0"
@@ -28,6 +27,9 @@
         }
     },
     "scripts": {
-        "post-create-project-cmd" : "php ./console framework:installWebAssets"
+        "post-create-project-cmd": [
+            "php ./console framework:generateBundle app",
+            "php ./console framework:installWebAssets"
+        ]
     }
 }
