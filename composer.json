@@ -7,9 +7,10 @@
         "psr-4": {
             "": [
                 "src/",
-                "tests/",
-                "bundles/app/src/",
-                "bundles/test/src/"
+                "tests/"
+            ],
+            "Project\\App\\": [
+                "bundles/app/src/"
             ]
         }
     },
