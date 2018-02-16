@@ -2,7 +2,7 @@
     "name": "phpixie/project",
     "type": "project",
     "description": "PHPixie skeleton project",
-    "license": "BSD",
+    "license": "BSD-3-Clause",
     "autoload": {
         "psr-4": {
             "": [
