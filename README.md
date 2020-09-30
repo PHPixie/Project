@@ -1,4 +1,4 @@
-# PHPixie PHP Framework
+# PHPixie PHP Framework Awesome
 <p align="center">
   <img src="https://phpixie.com/images/logo.png"/>
 </p>
