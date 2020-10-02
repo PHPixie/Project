@@ -1,4 +1,4 @@
-# PHPixie PHP Framework
+# PHPixie PHP Framework {An AMazing Project}
 <p align="center">
   <img src="https://phpixie.com/images/logo.png"/>
 </p>
