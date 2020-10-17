@@ -6,7 +6,7 @@
 Website: [phpixie.com](https://phpixie.com/)
 
 PHPixie started as a micro framework and has gradually grown to be one of the 
-most popular fullstack PHP frameworks while retaining its high performance. 
+most popular fullstack PHP frameworks while retaining its high performance in coding 
 This is in part because of the strict architecture that avoids common pitfalls 
 such as reliance on static methods, global scope, singletons and other antipatterns, 
 thus also ensuring that the code is easy to read, debug, extend and test. 
@@ -16,11 +16,11 @@ flow. It's easy to learn and straightforward to master.
 
 But it's not all just about the code. The PHPixie community is very friendly and 
 helpful—you can expect an answer to your question within minutes of asking 
-it in the chat. The framework documentation is full of examples and is regularly 
+it in the chat. The framework documentation is full of examples and videos is regularly 
 updated with tutorial videos.
 
 ## Demo
-Want to see an example? Check out a simple base project implementing user and administrator authorization: https://github.com/phpixie/project-auth
+Want to see an example? Check out a simple base project implemented user and administrator authorization: https://github.com/phpixie/project-auth
 
 ![Project Demo](http://i.imgur.com/WznceCf.gif)
 
@@ -35,6 +35,6 @@ Want to see an example? Check out a simple base project implementing user and ad
   - **MongoDB Support** - Database components support working with MongoDB out of the box, including relationships between SQL databases and Mongo collections.
   - **Best Practices** - Designed from scratch according to SOLID principles and industry standards.
   - **Hardened Security** - Using cryptographically secure hashes, random tokens and secure cookie handing.
-  - **Developer support** - Need help? Just drop a line in the chat and get help from the creator in no time.
+  - **Developer support** - Do you need help? Just drop a line in the chat and get help from the creator in no time.
 
  
